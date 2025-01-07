@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BookDetailsScreen extends StatefulWidget {
+  const BookDetailsScreen({super.key});
+
   @override
   _BookDetailsScreenState createState() => _BookDetailsScreenState();
 }
