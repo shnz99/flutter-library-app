@@ -48,7 +48,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Title'),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return 'Please enter the book title';
                   }
                   return null;
@@ -58,7 +58,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 controller: _authorController,
                 decoration: InputDecoration(labelText: 'Author'),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return 'Please enter the author';
                   }
                   return null;
@@ -68,7 +68,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 controller: _notesController,
                 decoration: InputDecoration(labelText: 'Notes'),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return 'Please enter your notes';
                   }
                   return null;

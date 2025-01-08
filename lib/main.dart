@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         fontFamily: 'CustomFont',
         textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.black),
+          bodyLarge: TextStyle(color: Colors.black),
           bodyText2: TextStyle(color: Colors.black),
         ),
       ),
