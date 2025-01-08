@@ -27,6 +27,8 @@ class BookListItem extends StatelessWidget {
             backgroundColor: Colors.grey[300],
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
           ),
+          SizedBox(height: 4),
+          Text('Rating: ${book.rating}'), // Display book rating
         ],
       ),
       onTap: () {
