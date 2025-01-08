@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
     HomeScreen(),
     AddBookScreen(),
     BookDetailsScreen(
-      book: Book(
+      book: const Book(
         title: 'Sample Book',
         author: 'Sample Author',
         isbn: '1234567890',
