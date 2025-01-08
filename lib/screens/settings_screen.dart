@@ -74,6 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _isDarkTheme = value;
               });
               _saveSettings();
+              _applySettings();
             },
           ),
           ListTile(
@@ -87,6 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _primaryColor = color;
                 });
                 _saveSettings();
+                _applySettings();
               });
             },
           ),
@@ -101,6 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _accentColor = color;
                 });
                 _saveSettings();
+                _applySettings();
               });
             },
           ),
@@ -115,6 +118,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _fontSize = value;
                 });
                 _saveSettings();
+                _applySettings();
               },
             ),
           ),
@@ -126,6 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _isGridView = value;
               });
               _saveSettings();
+              _applySettings();
             },
           ),
           ListTile(
@@ -139,6 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _spacing = value;
                 });
                 _saveSettings();
+                _applySettings();
               },
             ),
           ),
@@ -153,6 +159,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _padding = value;
                 });
                 _saveSettings();
+                _applySettings();
               },
             ),
           ),
@@ -164,6 +171,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _isHighContrast = value;
               });
               _saveSettings();
+              _applySettings();
             },
           ),
           ListTile(
@@ -177,6 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _textToSpeechSpeed = value;
                 });
                 _saveSettings();
+                _applySettings();
               },
             ),
           ),
@@ -191,6 +200,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _textToSpeechPitch = value;
                 });
                 _saveSettings();
+                _applySettings();
               },
             ),
           ),
@@ -222,5 +232,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       },
     );
+  }
+
+  void _applySettings() {
+    final theme = ThemeData(
+      brightness: _isDarkTheme ? Brightness.dark : Brightness.light,
+      primaryColor: _primaryColor,
+      accentColor: _accentColor,
+      textTheme: TextTheme(
+        bodyText1: TextStyle(fontSize: _fontSize),
+        bodyText2: TextStyle(fontSize: _fontSize),
+      ),
+    );
+
+    // Apply the theme to the app
+    final appState = context.findAncestorStateOfType<_MyAppState>();
+    appState?.setTheme(theme);
   }
 }

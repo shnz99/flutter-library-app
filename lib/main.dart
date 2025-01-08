@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/home_screen.dart';
 import 'screens/add_book_screen.dart';
 import 'screens/settings_screen.dart';
@@ -17,12 +18,32 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
+  bool _isDarkTheme = false;
+  Color _primaryColor = Colors.blue;
+  Color _accentColor = Colors.amber;
+  double _fontSize = 16.0;
 
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     AddBookScreen(),
     SettingsScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+      _primaryColor = Color(prefs.getInt('primaryColor') ?? Colors.blue.value);
+      _accentColor = Color(prefs.getInt('accentColor') ?? Colors.amber.value);
+      _fontSize = prefs.getDouble('fontSize') ?? 16.0;
+    });
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -35,11 +56,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Book Tracker',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'CustomFont',
+        brightness: _isDarkTheme ? Brightness.dark : Brightness.light,
+        primaryColor: _primaryColor,
+        accentColor: _accentColor,
         textTheme: TextTheme(
-          bodyLarge: TextStyle(color: Colors.black),
-          bodyMedium: TextStyle(color: Colors.black),
+          bodyText1: TextStyle(fontSize: _fontSize),
+          bodyText2: TextStyle(fontSize: _fontSize),
         ),
       ),
       home: Scaffold(

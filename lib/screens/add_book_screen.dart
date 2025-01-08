@@ -176,12 +176,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
               TextFormField(
                 controller: _notesController,
                 decoration: InputDecoration(labelText: 'Notes'),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter your notes';
-                  }
-                  return null;
-                },
               ),
               SizedBox(height: 20),
               ElevatedButton(
