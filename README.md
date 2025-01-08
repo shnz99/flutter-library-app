@@ -2,14 +2,6 @@
 
 This mobile app allows users to track and manage the books they have read. Users can add books to their library by searching for them or scanning their barcodes. The app provides features like categorizing books, adding notes, and more. This app works on both Android and iOS platforms and operates locally on the user's smartphone. Users can also export their entire library and import it back into the app.
 
-## Features
-- Track and manage books
-- Add books by searching or scanning barcodes
-- Categorize books
-- Add notes to books
-- Export and import library
-- Works offline
-
 ## Current App Features
 - Track and manage books
 - Add books by searching or scanning barcodes
