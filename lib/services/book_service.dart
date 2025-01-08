@@ -64,7 +64,7 @@ class BookService {
     await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
   }
 
-  Future<void> addNotes(String isbn, String notes) async {
+  Future<void> addNotes(String isbn, String? notes) async {
     final prefs = await SharedPreferences.getInstance();
     final books = await getBooks();
     final index = books.indexWhere((b) => b.isbn == isbn);

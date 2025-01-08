@@ -10,21 +10,23 @@ class BookListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: FadeInImage.assetNetwork(
-        placeholder: 'assets/images/placeholder.png', // Local placeholder image
-        image: 'https://via.placeholder.com/50', // Placeholder image URL
-        width: 50,
-        height: 50,
-        fit: BoxFit.cover,
-        imageErrorBuilder: (context, error, stackTrace) {
-          return Image.asset(
-            'assets/images/placeholder.png', // Local placeholder image
-            width: 50,
-            height: 50,
-            fit: BoxFit.cover,
-          );
-        },
-      ),
+      leading: book.imageUrl != null && book.imageUrl!.isNotEmpty
+          ? FadeInImage.assetNetwork(
+              placeholder: 'assets/images/placeholder.png', // Local placeholder image
+              image: book.imageUrl!,
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+              imageErrorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/images/placeholder.png', // Local placeholder image
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                );
+              },
+            )
+          : SizedBox(width: 50, height: 50), // Empty space when there is no image
       title: Text(book.title),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

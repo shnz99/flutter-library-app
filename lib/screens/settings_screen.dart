@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -21,6 +22,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
   double _textToSpeechPitch = 1.0;
 
   @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+      _primaryColor = Color(prefs.getInt('primaryColor') ?? Colors.blue.value);
+      _accentColor = Color(prefs.getInt('accentColor') ?? Colors.amber.value);
+      _fontSize = prefs.getDouble('fontSize') ?? 16.0;
+      _isGridView = prefs.getBool('isGridView') ?? false;
+      _spacing = prefs.getDouble('spacing') ?? 8.0;
+      _padding = prefs.getDouble('padding') ?? 8.0;
+      _isHighContrast = prefs.getBool('isHighContrast') ?? false;
+      _textToSpeechSpeed = prefs.getDouble('textToSpeechSpeed') ?? 1.0;
+      _textToSpeechPitch = prefs.getDouble('textToSpeechPitch') ?? 1.0;
+    });
+  }
+
+  Future<void> _saveSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkTheme', _isDarkTheme);
+    await prefs.setInt('primaryColor', _primaryColor.value);
+    await prefs.setInt('accentColor', _accentColor.value);
+    await prefs.setDouble('fontSize', _fontSize);
+    await prefs.setBool('isGridView', _isGridView);
+    await prefs.setDouble('spacing', _spacing);
+    await prefs.setDouble('padding', _padding);
+    await prefs.setBool('isHighContrast', _isHighContrast);
+    await prefs.setDouble('textToSpeechSpeed', _textToSpeechSpeed);
+    await prefs.setDouble('textToSpeechPitch', _textToSpeechPitch);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -36,6 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 _isDarkTheme = value;
               });
+              _saveSettings();
             },
           ),
           ListTile(
@@ -48,6 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   _primaryColor = color;
                 });
+                _saveSettings();
               });
             },
           ),
@@ -61,6 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   _accentColor = color;
                 });
+                _saveSettings();
               });
             },
           ),
@@ -74,6 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   _fontSize = value;
                 });
+                _saveSettings();
               },
             ),
           ),
@@ -84,6 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 _isGridView = value;
               });
+              _saveSettings();
             },
           ),
           ListTile(
@@ -96,6 +138,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   _spacing = value;
                 });
+                _saveSettings();
               },
             ),
           ),
@@ -109,6 +152,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   _padding = value;
                 });
+                _saveSettings();
               },
             ),
           ),
@@ -119,6 +163,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 _isHighContrast = value;
               });
+              _saveSettings();
             },
           ),
           ListTile(
@@ -131,6 +176,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   _textToSpeechSpeed = value;
                 });
+                _saveSettings();
               },
             ),
           ),
@@ -144,6 +190,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   _textToSpeechPitch = value;
                 });
+                _saveSettings();
               },
             ),
           ),
