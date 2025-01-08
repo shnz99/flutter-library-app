@@ -3,8 +3,17 @@ class Book {
   String author;
   String isbn;
   String notes;
+  double rating;
+  double readingProgress;
 
-  Book({this.title, this.author, this.isbn, this.notes});
+  Book({
+    required this.title,
+    required this.author,
+    required this.isbn,
+    required this.notes,
+    required this.rating,
+    required this.readingProgress,
+  });
 
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
@@ -12,6 +21,8 @@ class Book {
       author: json['author'],
       isbn: json['isbn'],
       notes: json['notes'],
+      rating: json['rating'],
+      readingProgress: json['readingProgress'],
     );
   }
 
@@ -21,6 +32,8 @@ class Book {
       'author': author,
       'isbn': isbn,
       'notes': notes,
+      'rating': rating,
+      'readingProgress': readingProgress,
     };
   }
 }

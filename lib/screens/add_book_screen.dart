@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/book_service.dart';
+import '../models/book.dart';
 
 class AddBookScreen extends StatefulWidget {
   const AddBookScreen({super.key});
@@ -12,12 +14,15 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _isbnController = TextEditingController();
+  final _notesController = TextEditingController();
+  final BookService _bookService = BookService();
 
   @override
   void dispose() {
     _titleController.dispose();
     _authorController.dispose();
     _isbnController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -36,6 +41,21 @@ class _AddBookScreenState extends State<AddBookScreen> {
         duration: Duration(seconds: 2),
       ),
     );
+  }
+
+  void _addBook() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final book = Book(
+        title: _titleController.text,
+        author: _authorController.text,
+        isbn: _isbnController.text,
+        notes: _notesController.text,
+        rating: 0.0,
+        readingProgress: 0.0,
+      );
+      await _bookService.addBook(book);
+      _showSuccessMessage('Book added successfully!');
+    }
   }
 
   @override
@@ -80,6 +100,16 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   return null;
                 },
               ),
+              TextFormField(
+                controller: _notesController,
+                decoration: InputDecoration(labelText: 'Notes'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please enter your notes';
+                  }
+                  return null;
+                },
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _searchForBook,
@@ -91,13 +121,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    // Save the book details
-                    _showSuccessMessage('Book added successfully!');
-                  }
-                },
-                child: Text('Add Book'),
+                onPressed: _addBook,
+                child: Text('Submit Book'),
               ),
             ],
           ),
