@@ -41,6 +41,12 @@ class BookService {
     return [];
   }
 
+  Future<List<Book>> getBooksSortedAlphabetically() async {
+    final books = await getBooks();
+    books.sort((a, b) => a.title.compareTo(b.title));
+    return books;
+  }
+
   Future<void> exportLibrary(String filePath) async {
     final books = await getBooks();
     final file = File(filePath);

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
+import 'screens/add_book_screen.dart';
+import 'screens/book_details_screen.dart';
+import 'screens/settings_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,8 +20,9 @@ class _MyAppState extends State<MyApp> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Text('Add Book'),
-    Text('Book Details'),
+    AddBookScreen(),
+    BookDetailsScreen(),
+    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -56,6 +60,10 @@ class _MyAppState extends State<MyApp> {
             BottomNavigationBarItem(
               icon: Icon(Icons.book),
               label: 'Book Details',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
             ),
           ],
           currentIndex: _selectedIndex,
