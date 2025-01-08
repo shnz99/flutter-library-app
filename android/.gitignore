@@ -15,6 +15,10 @@ key.properties
 # Flutter-related
 **/Flutter/ephemeral/
 **/Pods/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
 
 # Xcode-related
 **/dgph
