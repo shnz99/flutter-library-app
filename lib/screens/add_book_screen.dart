@@ -54,7 +54,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Title'),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return 'Please enter the book title';
                   }
                   return null;
@@ -64,7 +64,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 controller: _authorController,
                 decoration: InputDecoration(labelText: 'Author'),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return 'Please enter the author';
                   }
                   return null;
@@ -74,7 +74,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 controller: _isbnController,
                 decoration: InputDecoration(labelText: 'ISBN'),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return 'Please enter the ISBN';
                   }
                   return null;
@@ -92,7 +92,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState.validate()) {
+                  if (_formKey.currentState?.validate() ?? false) {
                     // Save the book details
                     _showSuccessMessage('Book added successfully!');
                   }
