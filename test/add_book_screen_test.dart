@@ -27,4 +27,11 @@ void main() {
     expect(find.text('Scan Barcode'), findsOneWidget);
     expect(find.text('Add Book'), findsOneWidget);
   });
+
+  testWidgets('AddBookScreen has a notes field', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: AddBookScreen()));
+
+    // Verify that the AddBookScreen has a Notes form field
+    expect(find.widgetWithText(TextFormField, 'Notes'), findsOneWidget);
+  });
 }
