@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_library_app/screens/book_details_screen.dart';
 import 'package:flutter_library_app/models/book.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 void main() {
   testWidgets('BookDetailsScreen displays book details', (WidgetTester tester) async {

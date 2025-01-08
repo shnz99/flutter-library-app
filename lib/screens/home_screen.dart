@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/add_book_screen.dart';
 import '../screens/book_details_screen.dart';
+import '../models/book.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -84,9 +85,17 @@ class HomeScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
+                final book = Book(
+                  title: 'Sample Book',
+                  author: 'Sample Author',
+                  isbn: '1234567890',
+                  notes: 'Sample notes',
+                  rating: 4.5,
+                  readingProgress: 0.75,
+                );
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BookDetailsScreen()),
+                  MaterialPageRoute(builder: (context) => BookDetailsScreen(book: book)),
                 );
               },
               child: Text('View Book Details'),

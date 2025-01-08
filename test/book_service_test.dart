@@ -17,7 +17,14 @@ void main() {
     });
 
     test('addBook adds a book to the library', () async {
-      final book = Book(title: 'Test Book', author: 'Test Author', isbn: '1234567890');
+      final book = Book(
+        title: 'Test Book',
+        author: 'Test Author',
+        isbn: '1234567890',
+        notes: 'Test notes',
+        rating: 4.5,
+        readingProgress: 0.75,
+      );
       await bookService.addBook(book);
 
       final books = await bookService.getBooks();
@@ -25,13 +32,30 @@ void main() {
       expect(books.first.title, 'Test Book');
       expect(books.first.author, 'Test Author');
       expect(books.first.isbn, '1234567890');
+      expect(books.first.notes, 'Test notes');
+      expect(books.first.rating, 4.5);
+      expect(books.first.readingProgress, 0.75);
     });
 
     test('updateBook updates a book in the library', () async {
-      final book = Book(title: 'Test Book', author: 'Test Author', isbn: '1234567890');
+      final book = Book(
+        title: 'Test Book',
+        author: 'Test Author',
+        isbn: '1234567890',
+        notes: 'Test notes',
+        rating: 4.5,
+        readingProgress: 0.75,
+      );
       await bookService.addBook(book);
 
-      final updatedBook = Book(title: 'Updated Book', author: 'Updated Author', isbn: '1234567890');
+      final updatedBook = Book(
+        title: 'Updated Book',
+        author: 'Updated Author',
+        isbn: '1234567890',
+        notes: 'Updated notes',
+        rating: 5.0,
+        readingProgress: 1.0,
+      );
       await bookService.updateBook(updatedBook);
 
       final books = await bookService.getBooks();
@@ -39,10 +63,20 @@ void main() {
       expect(books.first.title, 'Updated Book');
       expect(books.first.author, 'Updated Author');
       expect(books.first.isbn, '1234567890');
+      expect(books.first.notes, 'Updated notes');
+      expect(books.first.rating, 5.0);
+      expect(books.first.readingProgress, 1.0);
     });
 
     test('deleteBook removes a book from the library', () async {
-      final book = Book(title: 'Test Book', author: 'Test Author', isbn: '1234567890');
+      final book = Book(
+        title: 'Test Book',
+        author: 'Test Author',
+        isbn: '1234567890',
+        notes: 'Test notes',
+        rating: 4.5,
+        readingProgress: 0.75,
+      );
       await bookService.addBook(book);
 
       await bookService.deleteBook('1234567890');
@@ -52,8 +86,22 @@ void main() {
     });
 
     test('getBooks returns all books in the library', () async {
-      final book1 = Book(title: 'Test Book 1', author: 'Test Author 1', isbn: '1234567890');
-      final book2 = Book(title: 'Test Book 2', author: 'Test Author 2', isbn: '0987654321');
+      final book1 = Book(
+        title: 'Test Book 1',
+        author: 'Test Author 1',
+        isbn: '1234567890',
+        notes: 'Test notes 1',
+        rating: 4.5,
+        readingProgress: 0.75,
+      );
+      final book2 = Book(
+        title: 'Test Book 2',
+        author: 'Test Author 2',
+        isbn: '0987654321',
+        notes: 'Test notes 2',
+        rating: 5.0,
+        readingProgress: 1.0,
+      );
       await bookService.addBook(book1);
       await bookService.addBook(book2);
 
@@ -64,17 +112,31 @@ void main() {
     });
 
     test('addNotes adds notes to a book', () async {
-      final book = Book(title: 'Test Book', author: 'Test Author', isbn: '1234567890');
+      final book = Book(
+        title: 'Test Book',
+        author: 'Test Author',
+        isbn: '1234567890',
+        notes: 'Test notes',
+        rating: 4.5,
+        readingProgress: 0.75,
+      );
       await bookService.addBook(book);
 
-      await bookService.addNotes('1234567890', 'Test notes');
+      await bookService.addNotes('1234567890', 'Updated notes');
 
       final books = await bookService.getBooks();
-      expect(books.first.notes, 'Test notes');
+      expect(books.first.notes, 'Updated notes');
     });
 
     test('updateReadingProgress updates the reading progress of a book', () async {
-      final book = Book(title: 'Test Book', author: 'Test Author', isbn: '1234567890');
+      final book = Book(
+        title: 'Test Book',
+        author: 'Test Author',
+        isbn: '1234567890',
+        notes: 'Test notes',
+        rating: 4.5,
+        readingProgress: 0.75,
+      );
       await bookService.addBook(book);
 
       await bookService.updateReadingProgress('1234567890', 0.5);
@@ -84,7 +146,14 @@ void main() {
     });
 
     test('rateBook updates the rating of a book', () async {
-      final book = Book(title: 'Test Book', author: 'Test Author', isbn: '1234567890');
+      final book = Book(
+        title: 'Test Book',
+        author: 'Test Author',
+        isbn: '1234567890',
+        notes: 'Test notes',
+        rating: 4.5,
+        readingProgress: 0.75,
+      );
       await bookService.addBook(book);
 
       await bookService.rateBook('1234567890', 4.5);
