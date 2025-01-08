@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   const BookDetailsScreen({super.key});
@@ -12,6 +13,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _notesController = TextEditingController();
+  double _rating = 0.0;
+  double _readingProgress = 0.0;
 
   @override
   void dispose() {
@@ -70,6 +73,29 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   }
                   return null;
                 },
+              ),
+              SizedBox(height: 20),
+              RatingBar.builder(
+                initialRating: _rating,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  setState(() {
+                    _rating = rating;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
+              LinearProgressIndicator(
+                value: _readingProgress,
+                backgroundColor: Colors.grey[300],
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
               ),
               SizedBox(height: 20),
               ElevatedButton(
