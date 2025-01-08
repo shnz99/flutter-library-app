@@ -3,6 +3,7 @@ import 'screens/home_screen.dart';
 import 'screens/add_book_screen.dart';
 import 'screens/book_details_screen.dart';
 import 'screens/settings_screen.dart';
+import 'models/book.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,7 +22,16 @@ class _MyAppState extends State<MyApp> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     AddBookScreen(),
-    BookDetailsScreen(),
+    BookDetailsScreen(
+      book: Book(
+        title: 'Sample Book',
+        author: 'Sample Author',
+        isbn: '1234567890',
+        notes: 'Sample notes',
+        rating: 4.5,
+        readingProgress: 0.75,
+      ),
+    ),
     SettingsScreen(),
   ];
 

@@ -5,7 +5,7 @@ import '../screens/book_details_screen.dart';
 class BookListItem extends StatelessWidget {
   final Book book;
 
-  const BookListItem({super.key, @required this.book});
+  const BookListItem({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
