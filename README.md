@@ -19,7 +19,7 @@ This mobile app allows users to track and manage the books they have read. Users
 - Works offline
 
 ## Current Build Version
-The current build version for Android is 1.0.0+1.
+The current build version for Android is 1.0.0+1. The APK build and release process is triggered only by merging to the `main` branch.
 
 ## Development Environment Setup
 
@@ -39,6 +39,8 @@ To set up the development environment for this project, follow these steps:
    ```sh
    flutter pub get
    ```
+
+All testing and new changes should be pushed to the `dev` branch.
 
 ## Running the App
 
