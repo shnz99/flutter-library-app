@@ -36,7 +36,9 @@ class BookService {
     final booksString = prefs.getString(_booksKey);
     if (booksString != null) {
       final List<dynamic> booksJson = jsonDecode(booksString);
-      return booksJson.map((json) => Book.fromJson(json)).toList();
+      final books = booksJson.map((json) => Book.fromJson(json)).toList();
+      books.sort((a, b) => a.title.compareTo(b.title));
+      return books;
     }
     return [];
   }

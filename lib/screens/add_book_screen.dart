@@ -101,6 +101,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
       );
       await _bookService.addBook(book);
       _showSuccessMessage('Book added successfully!');
+      Navigator.pop(context);
     }
   }
 
