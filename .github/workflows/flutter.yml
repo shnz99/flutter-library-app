@@ -1,6 +1,9 @@
 name: Flutter CI
 
-on: [push, pull_request]
+on: 
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -17,6 +20,9 @@ jobs:
 
     - name: Install dependencies
       run: flutter pub get
+
+    - name: Install barcode_scan2 and http packages
+      run: flutter pub add barcode_scan2 http
 
     - name: Run tests
       run: flutter test
