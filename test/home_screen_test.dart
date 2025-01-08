@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_library_app/screens/home_screen.dart';
-import 'package:flutter_library_app/models/book.dart';
-import 'package:flutter_library_app/screens/book_details_screen.dart';
 
 void main() {
   testWidgets('HomeScreen has a title and buttons', (WidgetTester tester) async {
