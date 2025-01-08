@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_library_app/screens/add_book_screen.dart';
+import 'package:flutter_library_app/services/book_service.dart';
+import 'package:flutter_library_app/models/book.dart';
 
 void main() {
   testWidgets('AddBookScreen has a title and form fields', (WidgetTester tester) async {
@@ -36,6 +38,7 @@ void main() {
   });
 
   testWidgets('AddBookScreen adds a book and navigates back', (WidgetTester tester) async {
+    final bookService = BookService();
     await tester.pumpWidget(MaterialApp(home: AddBookScreen()));
 
     // Enter text into the form fields
@@ -48,7 +51,15 @@ void main() {
     await tester.tap(find.text('Submit Book'));
     await tester.pumpAndSettle();
 
-    // Verify that the book was added and the screen navigated back
+    // Verify that the book was added
+    final books = await bookService.getBooks();
+    expect(books.length, 1);
+    expect(books.first.title, 'Test Book');
+    expect(books.first.author, 'Test Author');
+    expect(books.first.isbn, '1234567890');
+    expect(books.first.notes, 'Test notes');
+
+    // Verify that the screen navigated back
     expect(find.text('Add Book'), findsNothing);
   });
 }

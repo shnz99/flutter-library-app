@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_library_app/screens/home_screen.dart';
+import 'package:flutter_library_app/models/book.dart';
+import 'package:flutter_library_app/services/book_service.dart';
 
 void main() {
   testWidgets('HomeScreen has a title and search field', (WidgetTester tester) async {
@@ -24,6 +26,17 @@ void main() {
   });
 
   testWidgets('HomeScreen filters books based on search query', (WidgetTester tester) async {
+    final bookService = BookService();
+    final sampleBook = Book(
+      title: 'Sample Book',
+      author: 'Sample Author',
+      isbn: '1234567890',
+      notes: 'Sample notes',
+      rating: 4.5,
+      readingProgress: 0.75,
+    );
+    await bookService.addBook(sampleBook);
+
     await tester.pumpWidget(MaterialApp(home: HomeScreen()));
 
     // Enter a search query
