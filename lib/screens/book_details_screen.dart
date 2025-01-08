@@ -26,7 +26,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     super.initState();
     _titleController.text = widget.book.title;
     _authorController.text = widget.book.author;
-    _notesController.text = widget.book.notes;
+    _notesController.text = widget.book.notes ?? '';
     _rating = widget.book.rating;
     _readingProgress = widget.book.readingProgress;
   }
@@ -59,8 +59,16 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     }
   }
 
-  void _addNotes() {
-    // Implement add notes functionality here
+  void _addNotes() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      await _bookService.addNotes(widget.book.isbn, _notesController.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Notes added successfully!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override
@@ -99,9 +107,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 controller: _notesController,
                 decoration: InputDecoration(labelText: 'Notes'),
                 validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter your notes';
-                  }
                   return null;
                 },
               ),

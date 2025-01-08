@@ -2,7 +2,7 @@ class Book {
   String title;
   String author;
   String isbn;
-  String notes;
+  String? notes;
   double rating;
   double readingProgress;
 
@@ -10,7 +10,7 @@ class Book {
     required this.title,
     required this.author,
     required this.isbn,
-    required this.notes,
+    this.notes,
     required this.rating,
     required this.readingProgress,
   });

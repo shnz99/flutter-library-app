@@ -99,10 +99,36 @@ class _AddBookScreenState extends State<AddBookScreen> {
         rating: 0.0,
         readingProgress: 0.0,
       );
-      await _bookService.addBook(book);
-      _showSuccessMessage('Book added successfully!');
-      Navigator.pop(context);
+      try {
+        await _bookService.addBook(book);
+        _showAlert('Success', 'Book added successfully!');
+      } catch (e) {
+        _showAlert('Error', 'Failed to add book');
+      }
     }
+  }
+
+  void _showAlert(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (title == 'Success') {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
