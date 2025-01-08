@@ -10,8 +10,25 @@ class BookListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading: Image.network(
+        'https://via.placeholder.com/50', // Placeholder image URL
+        width: 50,
+        height: 50,
+        fit: BoxFit.cover,
+      ),
       title: Text(book.title),
-      subtitle: Text(book.author),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(book.author),
+          SizedBox(height: 4),
+          LinearProgressIndicator(
+            value: 0.5, // Placeholder for reading progress
+            backgroundColor: Colors.grey[300],
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+        ],
+      ),
       onTap: () {
         Navigator.push(
           context,

@@ -29,6 +29,15 @@ class _AddBookScreenState extends State<AddBookScreen> {
     // Implement barcode scanning functionality here
   }
 
+  void _showSuccessMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +94,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     // Save the book details
+                    _showSuccessMessage('Book added successfully!');
                   }
                 },
                 child: Text('Add Book'),
