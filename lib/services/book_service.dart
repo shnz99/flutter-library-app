@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/book.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 class BookService {
   static const String _booksKey = 'books';
@@ -83,5 +84,26 @@ class BookService {
       books[index].rating = rating;
       await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
     }
+  }
+
+  Future<Book?> searchBookByNameOrISBN(String query) async {
+    final url = Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['totalItems'] > 0) {
+        final bookData = data['items'][0]['volumeInfo'];
+        return Book(
+          title: bookData['title'] ?? '',
+          author: bookData['authors']?.join(', ') ?? '',
+          isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
+          notes: '',
+          rating: 0.0,
+          readingProgress: 0.0,
+        );
+      }
+    }
+    return null;
   }
 }

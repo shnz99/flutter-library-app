@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../services/book_service.dart';
 import '../models/book.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AddBookScreen extends StatefulWidget {
   const AddBookScreen({super.key});
@@ -26,15 +29,58 @@ class _AddBookScreenState extends State<AddBookScreen> {
     super.dispose();
   }
 
-  void _searchForBook() {
-    // Implement search functionality here
+  void _searchForBook() async {
+    final query = _isbnController.text.isNotEmpty ? _isbnController.text : _titleController.text;
+    if (query.isEmpty) {
+      _showErrorMessage('Please enter a title or ISBN');
+      return;
+    }
+
+    final url = Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['totalItems'] > 0) {
+        final bookData = data['items'][0]['volumeInfo'];
+        setState(() {
+          _titleController.text = bookData['title'] ?? '';
+          _authorController.text = bookData['authors']?.join(', ') ?? '';
+          _isbnController.text = bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '';
+        });
+        _showSuccessMessage('Book details updated successfully!');
+      } else {
+        _showErrorMessage('No book found');
+      }
+    } else {
+      _showErrorMessage('Failed to fetch book details');
+    }
   }
 
-  void _scanBarcode() {
-    // Implement barcode scanning functionality here
+  void _scanBarcode() async {
+    try {
+      final result = await BarcodeScanner.scan();
+      if (result.type == ResultType.Barcode) {
+        setState(() {
+          _isbnController.text = result.rawContent;
+        });
+        _searchForBook();
+      }
+    } catch (e) {
+      _showErrorMessage('Failed to scan barcode');
+    }
   }
 
   void _showSuccessMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _showErrorMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
