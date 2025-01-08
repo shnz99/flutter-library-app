@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'CustomFont',
         textTheme: TextTheme(
           bodyLarge: TextStyle(color: Colors.black),
-          bodyText2: TextStyle(color: Colors.black),
+          bodyMedium: TextStyle(color: Colors.black),
         ),
       ),
       home: Scaffold(

@@ -30,6 +30,10 @@ flutter_lints
 3.5
 file:///C:/Users/damian.gawin/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-5.0.0/
 file:///C:/Users/damian.gawin/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-5.0.0/lib/
+flutter_rating_bar
+2.14
+file:///C:/Users/damian.gawin/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_rating_bar-4.0.1/
+file:///C:/Users/damian.gawin/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_rating_bar-4.0.1/lib/
 leak_tracker
 3.2
 file:///C:/Users/damian.gawin/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.7/
@@ -94,7 +98,7 @@ vm_service
 3.3
 file:///C:/Users/damian.gawin/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-14.3.0/
 file:///C:/Users/damian.gawin/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-14.3.0/lib/
-flutter_application_1
+flutter_library_app
 3.6
 file:///C:/Users/damian.gawin/Documents/aplikacje-testowe/flutter-library-app/
 file:///C:/Users/damian.gawin/Documents/aplikacje-testowe/flutter-library-app/lib/
