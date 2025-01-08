@@ -10,11 +10,20 @@ class BookListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.network(
-        'https://via.placeholder.com/50', // Placeholder image URL
+      leading: FadeInImage.assetNetwork(
+        placeholder: 'assets/images/placeholder.png', // Local placeholder image
+        image: 'https://via.placeholder.com/50', // Placeholder image URL
         width: 50,
         height: 50,
         fit: BoxFit.cover,
+        imageErrorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            'assets/images/placeholder.png', // Local placeholder image
+            width: 50,
+            height: 50,
+            fit: BoxFit.cover,
+          );
+        },
       ),
       title: Text(book.title),
       subtitle: Column(
