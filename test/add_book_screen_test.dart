@@ -25,7 +25,7 @@ void main() {
     // Verify that the AddBookScreen has buttons
     expect(find.text('Search for Book'), findsOneWidget);
     expect(find.text('Scan Barcode'), findsOneWidget);
-    expect(find.text('Add Book'), findsOneWidget);
+    expect(find.text('Submit Book'), findsOneWidget);
   });
 
   testWidgets('AddBookScreen has a notes field', (WidgetTester tester) async {

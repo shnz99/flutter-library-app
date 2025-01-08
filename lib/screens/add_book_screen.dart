@@ -122,7 +122,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _addBook,
-                child: Text('Add Book'),
+                child: Text('Submit Book'),
               ),
             ],
           ),
