@@ -14,6 +14,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _isbnController = TextEditingController();
+  final _notesController = TextEditingController();
   final BookService _bookService = BookService();
 
   @override
@@ -21,6 +22,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _titleController.dispose();
     _authorController.dispose();
     _isbnController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -47,6 +49,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
         title: _titleController.text,
         author: _authorController.text,
         isbn: _isbnController.text,
+        notes: _notesController.text,
+        rating: 0.0,
+        readingProgress: 0.0,
       );
       await _bookService.addBook(book);
       _showSuccessMessage('Book added successfully!');
@@ -91,6 +96,16 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'Please enter the ISBN';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _notesController,
+                decoration: InputDecoration(labelText: 'Notes'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please enter your notes';
                   }
                   return null;
                 },

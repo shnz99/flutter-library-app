@@ -10,7 +10,7 @@ void main() {
     expect(find.text('Add Book'), findsOneWidget);
 
     // Verify that the AddBookScreen has a Title form field
-    expect(find.byType(TextFormField), findsNWidgets(3));
+    expect(find.byType(TextFormField), findsNWidgets(4));
     expect(find.widgetWithText(TextFormField, 'Title'), findsOneWidget);
 
     // Verify that the AddBookScreen has an Author form field
@@ -18,6 +18,9 @@ void main() {
 
     // Verify that the AddBookScreen has an ISBN form field
     expect(find.widgetWithText(TextFormField, 'ISBN'), findsOneWidget);
+
+    // Verify that the AddBookScreen has a Notes form field
+    expect(find.widgetWithText(TextFormField, 'Notes'), findsOneWidget);
 
     // Verify that the AddBookScreen has buttons
     expect(find.text('Search for Book'), findsOneWidget);
