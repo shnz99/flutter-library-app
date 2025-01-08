@@ -161,5 +161,31 @@ void main() {
       final books = await bookService.getBooks();
       expect(books.first.rating, 4.5);
     });
+
+    test('getBooksSortedAlphabetically returns books sorted alphabetically by title', () async {
+      final book1 = Book(
+        title: 'B Test Book',
+        author: 'Test Author 1',
+        isbn: '1234567890',
+        notes: 'Test notes 1',
+        rating: 4.5,
+        readingProgress: 0.75,
+      );
+      final book2 = Book(
+        title: 'A Test Book',
+        author: 'Test Author 2',
+        isbn: '0987654321',
+        notes: 'Test notes 2',
+        rating: 5.0,
+        readingProgress: 1.0,
+      );
+      await bookService.addBook(book1);
+      await bookService.addBook(book2);
+
+      final books = await bookService.getBooksSortedAlphabetically();
+      expect(books.length, 2);
+      expect(books[0].title, 'A Test Book');
+      expect(books[1].title, 'B Test Book');
+    });
   });
 }

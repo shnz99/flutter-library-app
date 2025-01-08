@@ -34,4 +34,21 @@ void main() {
     // Verify that the AddBookScreen has a Notes form field
     expect(find.widgetWithText(TextFormField, 'Notes'), findsOneWidget);
   });
+
+  testWidgets('AddBookScreen adds a book and navigates back', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: AddBookScreen()));
+
+    // Enter text into the form fields
+    await tester.enterText(find.widgetWithText(TextFormField, 'Title'), 'Test Book');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Author'), 'Test Author');
+    await tester.enterText(find.widgetWithText(TextFormField, 'ISBN'), '1234567890');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Notes'), 'Test notes');
+
+    // Tap the 'Submit Book' button
+    await tester.tap(find.text('Submit Book'));
+    await tester.pumpAndSettle();
+
+    // Verify that the book was added and the screen navigated back
+    expect(find.text('Add Book'), findsNothing);
+  });
 }
