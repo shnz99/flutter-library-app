@@ -18,6 +18,9 @@ This mobile app allows users to track and manage the books they have read. Users
 - Export and import library
 - Works offline
 
+## Current Build Version
+The current build version for Android is 1.0.0+1.
+
 ## Development Environment Setup
 
 To set up the development environment for this project, follow these steps:
@@ -58,34 +61,9 @@ To run the tests for the app, follow these steps:
 
 ## Build Instructions
 
-To build the app for different platforms, follow these steps:
+To build the app for Android, follow these steps:
 
 1. Build the app for Android:
    ```sh
    flutter build apk
-   ```
-
-2. Build the app for iOS:
-   ```sh
-   flutter build ios
-   ```
-
-3. Build the app for web:
-   ```sh
-   flutter build web
-   ```
-
-4. Build the app for Windows:
-   ```sh
-   flutter build windows
-   ```
-
-5. Build the app for macOS:
-   ```sh
-   flutter build macos
-   ```
-
-6. Build the app for Linux:
-   ```sh
-   flutter build linux
    ```

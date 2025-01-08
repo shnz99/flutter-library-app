@@ -29,3 +29,9 @@ jobs:
 
     - name: Build app for Android
       run: flutter build apk
+
+    - name: Create new release package for Android
+      run: |
+        mkdir -p release
+        cp build/app/outputs/flutter-apk/app-release.apk release/
+        echo "New release package created for Android"
