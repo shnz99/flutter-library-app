@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'add_book_screen.dart';
-import 'book_details_screen.dart';
+import '../screens/add_book_screen.dart';
+import '../screens/book_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

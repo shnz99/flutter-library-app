@@ -23,7 +23,7 @@ class BookListItem extends StatelessWidget {
           Text(book.author),
           SizedBox(height: 4),
           LinearProgressIndicator(
-            value: 0.5, // Placeholder for reading progress
+            value: book.readingProgress, // Updated to use book's reading progress
             backgroundColor: Colors.grey[300],
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
           ),

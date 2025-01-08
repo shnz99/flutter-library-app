@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/book.dart';
+import 'dart:io';
 
 class BookService {
   static const String _booksKey = 'books';
@@ -52,5 +53,35 @@ class BookService {
     final books = booksJson.map((json) => Book.fromJson(json)).toList();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
+  }
+
+  Future<void> addNotes(String isbn, String notes) async {
+    final prefs = await SharedPreferences.getInstance();
+    final books = await getBooks();
+    final index = books.indexWhere((b) => b.isbn == isbn);
+    if (index != -1) {
+      books[index].notes = notes;
+      await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
+    }
+  }
+
+  Future<void> updateReadingProgress(String isbn, double progress) async {
+    final prefs = await SharedPreferences.getInstance();
+    final books = await getBooks();
+    final index = books.indexWhere((b) => b.isbn == isbn);
+    if (index != -1) {
+      books[index].readingProgress = progress;
+      await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
+    }
+  }
+
+  Future<void> rateBook(String isbn, double rating) async {
+    final prefs = await SharedPreferences.getInstance();
+    final books = await getBooks();
+    final index = books.indexWhere((b) => b.isbn == isbn);
+    if (index != -1) {
+      books[index].rating = rating;
+      await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
+    }
   }
 }

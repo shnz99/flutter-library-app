@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../models/book.dart';
+import '../services/book_service.dart';
 
 class BookDetailsScreen extends StatefulWidget {
-  const BookDetailsScreen({super.key});
+  final Book book;
+
+  const BookDetailsScreen({super.key, required this.book});
 
   @override
   _BookDetailsScreenState createState() => _BookDetailsScreenState();
@@ -15,6 +19,17 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   final _notesController = TextEditingController();
   double _rating = 0.0;
   double _readingProgress = 0.0;
+  final BookService _bookService = BookService();
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController.text = widget.book.title;
+    _authorController.text = widget.book.author;
+    _notesController.text = widget.book.notes;
+    _rating = widget.book.rating;
+    _readingProgress = widget.book.readingProgress;
+  }
 
   @override
   void dispose() {
@@ -24,8 +39,24 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     super.dispose();
   }
 
-  void _editBookDetails() {
-    // Implement edit functionality here
+  void _editBookDetails() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final updatedBook = Book(
+        title: _titleController.text,
+        author: _authorController.text,
+        isbn: widget.book.isbn,
+        notes: _notesController.text,
+        rating: _rating,
+        readingProgress: _readingProgress,
+      );
+      await _bookService.updateBook(updatedBook);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Book details updated successfully!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   void _addNotes() {
