@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../screens/add_book_screen.dart';
-import '../screens/book_details_screen.dart';
 import '../models/book.dart';
 import '../services/book_service.dart';
 import '../widgets/book_list_item.dart';

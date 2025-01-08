@@ -19,11 +19,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     AddBookScreen(),
     BookDetailsScreen(
-      book: const Book(
+      book: Book(
         title: 'Sample Book',
         author: 'Sample Author',
         isbn: '1234567890',
