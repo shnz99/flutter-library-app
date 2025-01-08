@@ -1,0 +1,4 @@
+{
+    "avdmanager.sdkManager": "c:\\android-sdk\\cmdline-tools\\bin\\sdkmanager.bat",
+    "avdmanager.executable": "c:\\android-sdk\\cmdline-tools\\bin\\avdmanager.bat"
+}
