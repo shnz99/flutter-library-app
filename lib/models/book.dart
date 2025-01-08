@@ -5,6 +5,7 @@ class Book {
   String? notes;
   double rating;
   double readingProgress;
+  String? imageUrl;
 
   Book({
     required this.title,
@@ -13,6 +14,7 @@ class Book {
     this.notes,
     required this.rating,
     required this.readingProgress,
+    this.imageUrl,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Book {
       notes: json['notes'],
       rating: json['rating'],
       readingProgress: json['readingProgress'],
+      imageUrl: json['imageUrl'],
     );
   }
 
