@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../screens/add_book_screen.dart';
 import '../models/book.dart';
 import '../services/book_service.dart';
 import '../widgets/book_list_item.dart';
@@ -23,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _fetchBooks() async {
-    final books = await _bookService.getBooks();
+    final books = await _bookService.getBooksSortedAlphabetically();
     setState(() {
-      _books = books..sort((a, b) => a.title.compareTo(b.title));
+      _books = books;
     });
   }
 
@@ -45,46 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Book Tracker'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onTap: () {
-                // Implement navigation to settings screen
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.info),
-              title: Text('About'),
-              onTap: () {
-                // Implement navigation to about screen
-              },
-            ),
-          ],
-        ),
       ),
       body: Column(
         children: <Widget>[
@@ -110,15 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddBookScreen()),
-          );
-        },
-        child: Icon(Icons.add),
       ),
     );
   }

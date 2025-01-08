@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/add_book_screen.dart';
-import 'screens/book_details_screen.dart';
 import 'screens/settings_screen.dart';
 import 'models/book.dart';
 
@@ -22,16 +21,6 @@ class _MyAppState extends State<MyApp> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     AddBookScreen(),
-    BookDetailsScreen(
-      book: Book(
-        title: 'Sample Book',
-        author: 'Sample Author',
-        isbn: '1234567890',
-        notes: 'Sample notes',
-        rating: 4.5,
-        readingProgress: 0.75,
-      ),
-    ),
     SettingsScreen(),
   ];
 
@@ -66,10 +55,6 @@ class _MyAppState extends State<MyApp> {
             BottomNavigationBarItem(
               icon: Icon(Icons.add),
               label: 'Add Book',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Book Details',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
