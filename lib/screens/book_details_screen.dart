@@ -9,8 +9,28 @@ class BookDetailsScreen extends StatelessWidget {
   BookDetailsScreen({super.key, required this.book});
 
   void _removeBook(BuildContext context) async {
-    await _bookService.deleteBook(book.isbn);
-    Navigator.pop(context);
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Delete Book'),
+        content: Text('Are you sure you want to delete this book?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldDelete == true) {
+      await _bookService.deleteBook(book.isbn);
+      Navigator.pop(context);
+    }
   }
 
   @override
