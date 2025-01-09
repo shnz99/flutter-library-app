@@ -1,17 +1,34 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_library_app/models/book.dart';
 import 'package:flutter_library_app/services/book_service.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('BookService', () {
     late BookService bookService;
+    late Database db;
 
     setUp(() async {
-      SharedPreferences.setMockInitialValues({});
+      db = await openDatabase(
+        join(await getDatabasesPath(), 'test_books_database.db'),
+        onCreate: (db, version) {
+          return db.execute(
+            'CREATE TABLE books(isbn TEXT PRIMARY KEY, title TEXT, author TEXT, imageUrl TEXT, publishedDate INTEGER, description TEXT)',
+          );
+        },
+        version: 1,
+      );
       bookService = BookService();
+      bookService.initDatabase();
+    });
+
+    tearDown(() async {
+      await db.close();
+      final path = join(await getDatabasesPath(), 'test_books_database.db');
+      await deleteDatabase(path);
     });
 
     test('add two books, remove one, and check if the other is present', () async {

@@ -1,46 +1,74 @@
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 import '../models/book.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class BookService {
-  static const String _booksKey = 'books';
+  static const String _booksTable = 'books';
+  static Database? _database;
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await initDatabase();
+    return _database!;
+  }
+
+  Future<Database> initDatabase() async {
+    return openDatabase(
+      join(await getDatabasesPath(), 'books_database.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE $_booksTable(isbn TEXT PRIMARY KEY, title TEXT, author TEXT, imageUrl TEXT, publishedDate INTEGER, description TEXT)',
+        );
+      },
+      version: 1,
+    );
+  }
 
   Future<void> addBook(Book book) async {
-    final prefs = await SharedPreferences.getInstance();
-    final books = await getBooks();
-    books.add(book);
-    await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
+    final db = await database;
+    await db.insert(
+      _booksTable,
+      book.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<void> updateBook(Book book) async {
-    final prefs = await SharedPreferences.getInstance();
-    final books = await getBooks();
-    final index = books.indexWhere((b) => b.isbn == book.isbn);
-    if (index != -1) {
-      books[index] = book;
-      await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
-    }
+    final db = await database;
+    await db.update(
+      _booksTable,
+      book.toJson(),
+      where: 'isbn = ?',
+      whereArgs: [book.isbn],
+    );
   }
 
   Future<void> deleteBook(String isbn) async {
-    final prefs = await SharedPreferences.getInstance();
-    final books = await getBooks();
-    books.removeWhere((b) => b.isbn == isbn);
-    await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
+    final db = await database;
+    await db.delete(
+      _booksTable,
+      where: 'isbn = ?',
+      whereArgs: [isbn],
+    );
   }
 
   Future<List<Book>> getBooks() async {
-    final prefs = await SharedPreferences.getInstance();
-    final booksString = prefs.getString(_booksKey);
-    if (booksString != null) {
-      final List<dynamic> booksJson = jsonDecode(booksString);
-      final books = booksJson.map((json) => Book.fromJson(json)).toList();
-      books.sort((a, b) => a.title.compareTo(b.title));
-      return books;
-    }
-    return [];
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(_booksTable);
+
+    return List.generate(maps.length, (i) {
+      return Book(
+        title: maps[i]['title'],
+        author: maps[i]['author'],
+        isbn: maps[i]['isbn'],
+        imageUrl: maps[i]['imageUrl'],
+        publishedDate: maps[i]['publishedDate'],
+        description: maps[i]['description'],
+      );
+    });
   }
 
   Future<List<Book>> getBooksSortedAlphabetically() async {
@@ -60,8 +88,14 @@ class BookService {
     final booksString = await file.readAsString();
     final List<dynamic> booksJson = jsonDecode(booksString);
     final books = booksJson.map((json) => Book.fromJson(json)).toList();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
+    final db = await database;
+    for (var book in books) {
+      await db.insert(
+        _booksTable,
+        book.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
   }
 
   Future<Book?> searchBookByNameOrISBN(String query) async {
