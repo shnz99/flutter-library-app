@@ -13,7 +13,7 @@ class BookDetailsScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Delete Book'),
-        content: Text('Are you sure you want to delete this book?'),
+        content: Text('Are you sure you want to delete the book "${book.title}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
