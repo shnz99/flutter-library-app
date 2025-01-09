@@ -5,7 +5,7 @@ class Book {
   String? imageUrl;
   int? year;
   String? description;
-  int? firstAppearanceYear; // Pc8c9
+  int? firstAppearanceYear;
 
   Book({
     required this.title,
@@ -14,7 +14,7 @@ class Book {
     this.imageUrl,
     this.year,
     this.description,
-    this.firstAppearanceYear, // Pc8c9
+    this.firstAppearanceYear,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -25,7 +25,7 @@ class Book {
       imageUrl: json['imageUrl'],
       year: json['year'],
       description: json['description'],
-      firstAppearanceYear: json['firstAppearanceYear'], // P897a
+      firstAppearanceYear: json['firstAppearanceYear'],
     );
   }
 
@@ -37,7 +37,12 @@ class Book {
       'imageUrl': imageUrl,
       'year': year,
       'description': description,
-      'firstAppearanceYear': firstAppearanceYear, // P7bf5
+      'firstAppearanceYear': firstAppearanceYear,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Book{title: $title, author: $author, isbn: $isbn, imageUrl: $imageUrl, year: $year, description: $description, firstAppearanceYear: $firstAppearanceYear}';
   }
 }
