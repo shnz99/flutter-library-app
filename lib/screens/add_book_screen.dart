@@ -145,7 +145,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
               ),
               TextFormField(
                 controller: _isbnController,
-                decoration: InputDecoration(labelText: 'ISBN'),
+                decoration: InputDecoration(labelText: 'ISBN 13'),
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'Please enter the ISBN';
