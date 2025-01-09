@@ -40,9 +40,22 @@ class BookListItem extends StatelessWidget {
                   );
                 },
               )
-            : SizedBox(width: 50, height: 50), // Empty space when there is no image
+            : Image.asset(
+                'assets/images/placeholder.png', // Local placeholder image
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
         title: Text(book.title),
-        subtitle: Text(book.author),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(book.author),
+            if (book.year != null) Text('Year: ${book.year}'),
+            if (book.description != null && book.description!.isNotEmpty)
+              Text('Description: ${book.description}'),
+          ],
+        ),
       ),
     );
   }
