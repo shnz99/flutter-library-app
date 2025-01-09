@@ -17,7 +17,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _isbnController = TextEditingController();
-  final _notesController = TextEditingController();
   final BookService _bookService = BookService();
 
   @override
@@ -25,7 +24,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _titleController.dispose();
     _authorController.dispose();
     _isbnController.dispose();
-    _notesController.dispose();
     super.dispose();
   }
 
@@ -95,40 +93,14 @@ class _AddBookScreenState extends State<AddBookScreen> {
         title: _titleController.text,
         author: _authorController.text,
         isbn: _isbnController.text,
-        notes: _notesController.text,
-        rating: 0.0,
-        readingProgress: 0.0,
       );
       try {
         await _bookService.addBook(book);
-        _showAlert('Success', 'Book added successfully!');
+        _showSuccessMessage('Book added successfully!');
       } catch (e) {
-        _showAlert('Error', 'Failed to add book');
+        _showErrorMessage('Failed to add book');
       }
     }
-  }
-
-  void _showAlert(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                if (title == 'Success') {
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -172,10 +144,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   }
                   return null;
                 },
-              ),
-              TextFormField(
-                controller: _notesController,
-                decoration: InputDecoration(labelText: 'Notes'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
