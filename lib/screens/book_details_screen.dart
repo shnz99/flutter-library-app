@@ -29,7 +29,7 @@ class BookDetailsScreen extends StatelessWidget {
 
     if (shouldDelete == true) {
       await _bookService.deleteBook(book.isbn);
-      Navigator.pop(context);
+      Navigator.pushReplacementNamed(context, '/');
     }
   }
 
