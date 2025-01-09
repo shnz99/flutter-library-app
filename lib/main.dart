@@ -4,6 +4,7 @@ import 'screens/add_book_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/book_details_screen.dart'; // Import the new screen
 import 'models/book.dart'; // Import the Book class
+import 'services/book_service.dart'; // Import the BookService class
 
 void main() {
   runApp(MyApp());
@@ -18,6 +19,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
+  final BookService _bookService = BookService();
 
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
@@ -29,6 +31,16 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeDatabase();
+  }
+
+  void _initializeDatabase() async {
+    await _bookService.initDatabase();
   }
 
   @override
