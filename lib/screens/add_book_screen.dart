@@ -17,6 +17,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _isbnController = TextEditingController();
+  final _yearController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final BookService _bookService = BookService();
 
   @override
@@ -24,6 +26,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _titleController.dispose();
     _authorController.dispose();
     _isbnController.dispose();
+    _yearController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -45,6 +49,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
           _titleController.text = bookData['title'] ?? '';
           _authorController.text = bookData['authors']?.join(', ') ?? '';
           _isbnController.text = bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '';
+          _yearController.text = bookData['publishedDate']?.split('-')?.first ?? '';
+          _descriptionController.text = bookData['description'] ?? '';
         });
         _showSuccessMessage('Book details updated successfully!');
       } else {
@@ -93,6 +99,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
         title: _titleController.text,
         author: _authorController.text,
         isbn: _isbnController.text,
+        year: int.tryParse(_yearController.text),
+        description: _descriptionController.text,
       );
       try {
         await _bookService.addBook(book);
@@ -141,6 +149,26 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'Please enter the ISBN';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _yearController,
+                decoration: InputDecoration(labelText: 'Year'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please enter the year';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please enter the description';
                   }
                   return null;
                 },
