@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/book.dart';
 import '../services/book_service.dart';
 import '../widgets/book_list_item.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,6 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _navigateToSettings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SettingsScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final filteredBooks = _books.where((book) {
@@ -44,6 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Book Tracker'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: _navigateToSettings,
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
