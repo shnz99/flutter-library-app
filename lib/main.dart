@@ -3,6 +3,7 @@ import 'screens/home_screen.dart';
 import 'screens/add_book_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/book_details_screen.dart'; // Import the new screen
+import 'models/book.dart'; // Import the Book class
 
 void main() {
   runApp(MyApp());
