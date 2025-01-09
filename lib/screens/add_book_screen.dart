@@ -146,18 +146,36 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 },
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _searchForBook,
-                child: Text('Search for Book'),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _searchForBook,
+                      child: Text('Search for Book'),
+                    ),
+                  ),
+                ],
               ),
-              ElevatedButton(
-                onPressed: _scanBarcode,
-                child: Text('Scan Barcode'),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _scanBarcode,
+                      child: Text('Scan Barcode'),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _addBook,
-                child: Text('Submit Book'),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _addBook,
+                      child: Text('Submit Book'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

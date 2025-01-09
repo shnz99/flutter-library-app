@@ -8,26 +8,42 @@ class BookListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: book.imageUrl != null && book.imageUrl!.isNotEmpty
-          ? FadeInImage.assetNetwork(
-              placeholder: 'assets/images/placeholder.png', // Local placeholder image
-              image: book.imageUrl!,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  'assets/images/placeholder.png', // Local placeholder image
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                );
-              },
-            )
-          : SizedBox(width: 50, height: 50), // Empty space when there is no image
-      title: Text(book.title),
-      subtitle: Text(book.author),
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      width: double.infinity,
+      child: ListTile(
+        leading: book.imageUrl != null && book.imageUrl!.isNotEmpty
+            ? FadeInImage.assetNetwork(
+                placeholder: 'assets/images/placeholder.png', // Local placeholder image
+                image: book.imageUrl!,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/placeholder.png', // Local placeholder image
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  );
+                },
+              )
+            : SizedBox(width: 50, height: 50), // Empty space when there is no image
+        title: Text(book.title),
+        subtitle: Text(book.author),
+      ),
     );
   }
 }
