@@ -76,7 +76,7 @@ class BookService {
           title: bookData['title'] ?? '',
           author: bookData['authors']?.join(', ') ?? '',
           isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
-          year: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
+          publishedDate: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
           description: bookData['description'] ?? '',
         );
       }
