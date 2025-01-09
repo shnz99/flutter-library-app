@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
 import '../models/book.dart';
+import '../services/book_service.dart';
 
 class BookDetailsScreen extends StatelessWidget {
   final Book book;
+  final BookService _bookService = BookService();
 
-  const BookDetailsScreen({super.key, required this.book});
+  BookDetailsScreen({super.key, required this.book});
+
+  void _removeBook(BuildContext context) async {
+    await _bookService.deleteBook(book.isbn);
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(book.title),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => _removeBook(context),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
