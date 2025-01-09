@@ -65,7 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               itemCount: filteredBooks.length,
               itemBuilder: (context, index) {
-                return BookListItem(book: filteredBooks[index]);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  child: BookListItem(book: filteredBooks[index]),
+                );
               },
             ),
           ),

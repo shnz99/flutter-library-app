@@ -33,13 +33,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            ElevatedButton(
-              onPressed: _exportLibrary,
-              child: Text('Export Library'),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _exportLibrary,
+                    child: Text('Export Library'),
+                  ),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: _importLibrary,
-              child: Text('Import Library'),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _importLibrary,
+                    child: Text('Import Library'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
