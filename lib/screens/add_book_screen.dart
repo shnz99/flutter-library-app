@@ -101,6 +101,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
         isbn: _isbnController.text,
         year: int.tryParse(_yearController.text),
         description: _descriptionController.text,
+        firstAppearanceYear: int.tryParse(_yearController.text), // P83b7
       );
       try {
         await _bookService.addBook(book);

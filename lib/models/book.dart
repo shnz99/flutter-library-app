@@ -5,6 +5,7 @@ class Book {
   String? imageUrl;
   int? year;
   String? description;
+  int? firstAppearanceYear; // Pc8c9
 
   Book({
     required this.title,
@@ -13,6 +14,7 @@ class Book {
     this.imageUrl,
     this.year,
     this.description,
+    this.firstAppearanceYear, // Pc8c9
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Book {
       imageUrl: json['imageUrl'],
       year: json['year'],
       description: json['description'],
+      firstAppearanceYear: json['firstAppearanceYear'], // P897a
     );
   }
 
@@ -34,6 +37,7 @@ class Book {
       'imageUrl': imageUrl,
       'year': year,
       'description': description,
+      'firstAppearanceYear': firstAppearanceYear, // P7bf5
     };
   }
 }
