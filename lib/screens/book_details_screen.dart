@@ -32,15 +32,9 @@ class BookDetailsScreen extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8.0),
-            if (book.year != null)
+            if (book.publishedDate != null)
               Text(
-                'Year: ${book.year}',
-                style: TextStyle(fontSize: 18),
-              ),
-            SizedBox(height: 8.0),
-            if (book.firstAppearanceYear != null)
-              Text(
-                'First Appearance Year: ${book.firstAppearanceYear}',
+                'Published Date: ${book.publishedDate}',
                 style: TextStyle(fontSize: 18),
               ),
             SizedBox(height: 8.0),

@@ -17,7 +17,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _isbnController = TextEditingController();
-  final _yearController = TextEditingController();
+  final _publishedDateController = TextEditingController();
   final _descriptionController = TextEditingController();
   final BookService _bookService = BookService();
 
@@ -26,7 +26,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _titleController.dispose();
     _authorController.dispose();
     _isbnController.dispose();
-    _yearController.dispose();
+    _publishedDateController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
@@ -49,7 +49,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
           _titleController.text = bookData['title'] ?? '';
           _authorController.text = bookData['authors']?.join(', ') ?? '';
           _isbnController.text = bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '';
-          _yearController.text = bookData['publishedDate']?.split('-')?.first ?? '';
+          _publishedDateController.text = bookData['publishedDate']?.split('-')?.first ?? '';
           _descriptionController.text = bookData['description'] ?? '';
         });
         _showSuccessMessage('Book details updated successfully!');
@@ -99,9 +99,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
         title: _titleController.text,
         author: _authorController.text,
         isbn: _isbnController.text,
-        year: int.tryParse(_yearController.text),
+        publishedDate: int.tryParse(_publishedDateController.text),
         description: _descriptionController.text,
-        firstAppearanceYear: int.tryParse(_yearController.text), // P83b7
       );
       try {
         await _bookService.addBook(book);
@@ -155,11 +154,11 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 },
               ),
               TextFormField(
-                controller: _yearController,
-                decoration: InputDecoration(labelText: 'Year'),
+                controller: _publishedDateController,
+                decoration: InputDecoration(labelText: 'Published Date'),
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
-                    return 'Please enter the year';
+                    return 'Please enter the published date';
                   }
                   return null;
                 },
