@@ -39,7 +39,7 @@ class BookListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(book.author),
-              if (book.year != null) Text('Year: ${book.year}'),
+              if (book.publishedDate != null) Text('Published Date: ${book.publishedDate}'),
             ],
           ),
         ),

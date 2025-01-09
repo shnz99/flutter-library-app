@@ -3,29 +3,27 @@ class Book {
   String author;
   String isbn;
   String? imageUrl;
-  int? year;
+  int? publishedDate;
   String? description;
-  int? firstAppearanceYear;
 
   Book({
     required this.title,
     required this.author,
     required this.isbn,
     this.imageUrl,
-    this.year,
+    this.publishedDate,
     this.description,
-    this.firstAppearanceYear,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
       title: json['title'],
       author: json['author'],
-      isbn: json['isbn'],
+      isbn: (json['industryIdentifiers'] as List<dynamic>?)
+          ?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
       imageUrl: json['imageUrl'],
-      year: json['year'],
+      publishedDate: json['publishedDate'],
       description: json['description'],
-      firstAppearanceYear: json['firstAppearanceYear'],
     );
   }
 
@@ -35,14 +33,13 @@ class Book {
       'author': author,
       'isbn': isbn,
       'imageUrl': imageUrl,
-      'year': year,
+      'publishedDate': publishedDate,
       'description': description,
-      'firstAppearanceYear': firstAppearanceYear,
     };
   }
 
   @override
   String toString() {
-    return 'Book{title: $title, author: $author, isbn: $isbn, imageUrl: $imageUrl, year: $year, description: $description, firstAppearanceYear: $firstAppearanceYear}';
+    return 'Book{title: $title, author: $author, isbn: $isbn, imageUrl: $imageUrl, publishedDate: $publishedDate, description: $description}';
   }
 }
