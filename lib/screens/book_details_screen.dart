@@ -45,9 +45,14 @@ class BookDetailsScreen extends StatelessWidget {
               ),
             SizedBox(height: 8.0),
             if (book.description != null)
-              Text(
-                'Description: ${book.description}',
-                style: TextStyle(fontSize: 16),
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Text(
+                    'Description: ${book.description}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
               ),
           ],
         ),
