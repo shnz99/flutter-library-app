@@ -64,36 +64,6 @@ class BookService {
     await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
   }
 
-  Future<void> addNotes(String isbn, String? notes) async {
-    final prefs = await SharedPreferences.getInstance();
-    final books = await getBooks();
-    final index = books.indexWhere((b) => b.isbn == isbn);
-    if (index != -1) {
-      books[index].notes = notes;
-      await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
-    }
-  }
-
-  Future<void> updateReadingProgress(String isbn, double progress) async {
-    final prefs = await SharedPreferences.getInstance();
-    final books = await getBooks();
-    final index = books.indexWhere((b) => b.isbn == isbn);
-    if (index != -1) {
-      books[index].readingProgress = progress;
-      await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
-    }
-  }
-
-  Future<void> rateBook(String isbn, double rating) async {
-    final prefs = await SharedPreferences.getInstance();
-    final books = await getBooks();
-    final index = books.indexWhere((b) => b.isbn == isbn);
-    if (index != -1) {
-      books[index].rating = rating;
-      await prefs.setString(_booksKey, jsonEncode(books.map((b) => b.toJson()).toList()));
-    }
-  }
-
   Future<Book?> searchBookByNameOrISBN(String query) async {
     final url = Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
     final response = await http.get(url);
@@ -106,9 +76,6 @@ class BookService {
           title: bookData['title'] ?? '',
           author: bookData['authors']?.join(', ') ?? '',
           isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
-          notes: '',
-          rating: 0.0,
-          readingProgress: 0.0,
         );
       }
     }
