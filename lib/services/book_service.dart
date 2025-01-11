@@ -8,6 +8,13 @@ import 'package:http/http.dart' as http;
 class BookService {
   static const String _booksTable = 'books';
   static Database? _database;
+  static final BookService _instance = BookService._internal();
+
+  factory BookService() {
+    return _instance;
+  }
+
+  BookService._internal();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
