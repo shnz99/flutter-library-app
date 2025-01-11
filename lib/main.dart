@@ -46,12 +46,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  void dispose() {
-    _bookService.database.then((db) => db.close());
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Book Tracker',

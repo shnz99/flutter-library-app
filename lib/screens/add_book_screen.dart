@@ -29,7 +29,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _isbnController.dispose();
     _publishedDateController.dispose();
     _descriptionController.dispose();
-    _bookService.database.then((db) => db.close());
     super.dispose();
   }
 
