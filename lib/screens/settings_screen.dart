@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/book_service.dart';
+import 'package:get_it/get_it.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -9,7 +10,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final BookService _bookService = BookService();
+  final BookService _bookService = GetIt.I<BookService>();
 
   void _exportLibrary() async {
     // Implement the export functionality here
@@ -21,6 +22,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // Implement the import functionality here
     // For example, you can use a file picker to select the import file
     // and then call _bookService.importLibrary(filePath);
+  }
+
+  @override
+  void dispose() {
+    _bookService.database.then((db) => db.close());
+    super.dispose();
   }
 
   @override

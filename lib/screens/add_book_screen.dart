@@ -4,6 +4,7 @@ import '../models/book.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:get_it/get_it.dart';
 
 class AddBookScreen extends StatefulWidget {
   const AddBookScreen({super.key});
@@ -19,7 +20,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _isbnController = TextEditingController();
   final _publishedDateController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final BookService _bookService = BookService();
+  final BookService _bookService = GetIt.I<BookService>();
 
   @override
   void dispose() {
@@ -28,6 +29,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _isbnController.dispose();
     _publishedDateController.dispose();
     _descriptionController.dispose();
+    _bookService.database.then((db) => db.close());
     super.dispose();
   }
 
