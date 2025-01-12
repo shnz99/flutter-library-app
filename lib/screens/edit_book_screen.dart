@@ -3,8 +3,6 @@ import '../models/book.dart';
 import '../services/book_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class EditBookScreen extends StatefulWidget {
   final Book book;
@@ -54,33 +52,21 @@ class _EditBookScreenState extends State<EditBookScreen> {
       return;
     }
 
-    final isISBN13 = RegExp(r'^\d{13}$').hasMatch(query);
-    final isISBN10 = RegExp(r'^\d{10}$').hasMatch(query);
-
-    final url = isISBN13
-        ? Uri.parse('https://www.googleapis.com/books/v1/volumes?q=isbn:$query')
-        : isISBN10
-            ? Uri.parse('https://www.googleapis.com/books/v1/volumes?q=isbn10:$query')
-            : Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
-
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['totalItems'] > 0) {
-        final bookData = data['items'][0]['volumeInfo'];
+    try {
+      final book = await _bookService.searchForBook(query);
+      if (book != null) {
         setState(() {
-          _titleController.text = bookData['title'] ?? '';
-          _authorController.text = bookData['authors']?.join(', ') ?? '';
-          _isbnController.text = bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '';
-          _publishedDateController.text = bookData['publishedDate']?.split('-')?.first ?? '';
-          _descriptionController.text = bookData['description'] ?? '';
+          _titleController.text = book.title;
+          _authorController.text = book.author;
+          _isbnController.text = book.isbn;
+          _publishedDateController.text = book.publishedDate?.toString() ?? '';
+          _descriptionController.text = book.description ?? '';
         });
         _showSuccessMessage('Book details updated successfully!');
       } else {
         _showErrorMessage('No book found');
       }
-    } else {
+    } catch (e) {
       _showErrorMessage('Failed to fetch book details');
     }
   }
