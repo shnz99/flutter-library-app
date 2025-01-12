@@ -91,8 +91,17 @@ class BookService {
     try {
       final books = await getBooks();
       final file = File(filePath);
-      final jsonBooks = jsonEncode(books.map((b) => b.toJson()).toList());
-      await file.writeAsString(jsonBooks);
+      final sqlDump = StringBuffer();
+
+      sqlDump.writeln('BEGIN TRANSACTION;');
+      for (var book in books) {
+        sqlDump.writeln(
+          "INSERT INTO $_booksTable (isbn, title, author, imageUrl, publishedDate, description, myRating, averageRating) VALUES ('${book.isbn}', '${book.title}', '${book.author}', '${book.imageUrl}', ${book.publishedDate}, '${book.description}', ${book.myRating}, ${book.averageRating});"
+        );
+      }
+      sqlDump.writeln('COMMIT;');
+
+      await file.writeAsString(sqlDump.toString());
     } catch (e) {
       throw Exception('Failed to export library: $e');
     }
@@ -101,17 +110,11 @@ class BookService {
   Future<void> importLibrary(String filePath) async {
     try {
       final file = File(filePath);
-      final booksString = await file.readAsString();
-      final List<dynamic> booksJson = jsonDecode(booksString);
-      final books = booksJson.map((json) => Book.fromJson(json)).toList();
+      final sqlDump = await file.readAsString();
       final db = await database;
-      for (var book in books) {
-        await db.insert(
-          _booksTable,
-          book.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace,
-        );
-      }
+      await db.execute('BEGIN TRANSACTION;');
+      await db.execute(sqlDump);
+      await db.execute('COMMIT;');
       _notifyBookListChanged();
     } catch (e) {
       throw Exception('Failed to import library: $e');
