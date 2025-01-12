@@ -88,25 +88,33 @@ class BookService {
   }
 
   Future<void> exportLibrary(String filePath) async {
-    final books = await getBooks();
-    final file = File(filePath);
-    await file.writeAsString(jsonEncode(books.map((b) => b.toJson()).toList()));
+    try {
+      final books = await getBooks();
+      final file = File(filePath);
+      await file.writeAsString(jsonEncode(books.map((b) => b.toJson()).toList()));
+    } catch (e) {
+      throw Exception('Failed to export library: $e');
+    }
   }
 
   Future<void> importLibrary(String filePath) async {
-    final file = File(filePath);
-    final booksString = await file.readAsString();
-    final List<dynamic> booksJson = jsonDecode(booksString);
-    final books = booksJson.map((json) => Book.fromJson(json)).toList();
-    final db = await database;
-    for (var book in books) {
-      await db.insert(
-        _booksTable,
-        book.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+    try {
+      final file = File(filePath);
+      final booksString = await file.readAsString();
+      final List<dynamic> booksJson = jsonDecode(booksString);
+      final books = booksJson.map((json) => Book.fromJson(json)).toList();
+      final db = await database;
+      for (var book in books) {
+        await db.insert(
+          _booksTable,
+          book.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      _notifyBookListChanged();
+    } catch (e) {
+      throw Exception('Failed to import library: $e');
     }
-    _notifyBookListChanged();
   }
 
   Future<Book?> searchBookByNameOrISBN(String query) async {
