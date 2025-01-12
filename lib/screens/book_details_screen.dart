@@ -94,7 +94,7 @@ class BookDetailsScreen extends StatelessWidget {
                   direction: Axis.horizontal,
                 ),
               SizedBox(height: 8.0),
-              RatingBar.builder(
+              RatingBar(
                 initialRating: book.myRating ?? 0,
                 minRating: 1,
                 direction: Axis.horizontal,

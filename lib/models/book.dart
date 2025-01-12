@@ -2,7 +2,6 @@ class Book {
   String title;
   String author;
   String isbn;
-  String? isbn10;
   String? imageUrl;
   int? publishedDate;
   String? description;
@@ -13,7 +12,6 @@ class Book {
     required this.title,
     required this.author,
     required this.isbn,
-    this.isbn10,
     this.imageUrl,
     this.publishedDate,
     this.description,
@@ -27,8 +25,6 @@ class Book {
       author: json['author'],
       isbn: (json['industryIdentifiers'] as List<dynamic>?)
           ?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
-      isbn10: (json['industryIdentifiers'] as List<dynamic>?)
-          ?.firstWhere((id) => id['type'] == 'ISBN_10', orElse: () => null)?['identifier'] ?? '',
       imageUrl: json['imageUrl'],
       publishedDate: json['publishedDate'],
       description: json['description'],
@@ -42,7 +38,6 @@ class Book {
       'title': title,
       'author': author,
       'isbn': isbn,
-      'isbn10': isbn10,
       'imageUrl': imageUrl,
       'publishedDate': publishedDate,
       'description': description,
@@ -56,7 +51,6 @@ class Book {
       'title': title,
       'author': author,
       'isbn': isbn,
-      'isbn10': isbn10,
       'imageUrl': imageUrl,
       'publishedDate': publishedDate,
       'description': description,
@@ -70,7 +64,6 @@ class Book {
       title: map['title'],
       author: map['author'],
       isbn: map['isbn'],
-      isbn10: map['isbn10'],
       imageUrl: map['imageUrl'],
       publishedDate: map['publishedDate'],
       description: map['description'],
@@ -81,6 +74,6 @@ class Book {
 
   @override
   String toString() {
-    return 'Book{title: $title, author: $author, isbn: $isbn, isbn10: $isbn10, imageUrl: $imageUrl, publishedDate: $publishedDate, description: $description, myRating: $myRating, averageRating: $averageRating}';
+    return 'Book{title: $title, author: $author, isbn: $isbn, imageUrl: $imageUrl, publishedDate: $publishedDate, description: $description, myRating: $myRating, averageRating: $averageRating}';
   }
 }

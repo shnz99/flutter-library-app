@@ -27,7 +27,7 @@ class BookService {
       join(await getDatabasesPath(), 'books_database.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE $_booksTable(isbn TEXT PRIMARY KEY, title TEXT, author TEXT, imageUrl TEXT, publishedDate INTEGER, description TEXT, isbn10 TEXT, myRating REAL, averageRating REAL)',
+          'CREATE TABLE $_booksTable(isbn TEXT PRIMARY KEY, title TEXT, author TEXT, imageUrl TEXT, publishedDate INTEGER, description TEXT, myRating REAL, averageRating REAL)',
         );
       },
       version: 1,
@@ -110,7 +110,6 @@ class BookService {
           title: bookData['title'] ?? '',
           author: bookData['authors']?.join(', ') ?? '',
           isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
-          isbn10: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_10', orElse: () => null)?['identifier'] ?? '',
           publishedDate: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
           description: bookData['description'] ?? '',
           averageRating: bookData['averageRating']?.toDouble(),
