@@ -4,6 +4,7 @@ import '../services/book_service.dart';
 import '../widgets/book_list_item.dart';
 import 'package:get_it/get_it.dart';
 import 'settings_screen.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final BookService _bookService = GetIt.I<BookService>();
-  List<Book> _books = [];
+  Stream<List<Book>>? _booksStream;
   String _searchQuery = '';
 
   @override
@@ -23,10 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _fetchBooks();
   }
 
-  void _fetchBooks() async {
-    final books = await _bookService.getBooksSortedAlphabetically();
+  void _fetchBooks() {
     setState(() {
-      _books = books;
+      _booksStream = _bookService.getBooksStreamSortedAlphabetically();
     });
   }
 
@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _searchQuery = query;
     });
+    _fetchBooks();
   }
 
   void _navigateToSettings() {
@@ -45,11 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredBooks = _books.where((book) {
-      return book.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          book.author.toLowerCase().contains(_searchQuery.toLowerCase());
-    }).toList();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Book Tracker'),
@@ -63,13 +59,31 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: ListView.builder(
-              itemCount: filteredBooks.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                  child: BookListItem(book: filteredBooks[index]),
-                );
+            child: StreamBuilder<List<Book>>(
+              stream: _booksStream,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No books found'));
+                } else {
+                  final filteredBooks = snapshot.data!.where((book) {
+                    return book.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                        book.author.toLowerCase().contains(_searchQuery.toLowerCase());
+                  }).toList();
+
+                  return ListView.builder(
+                    itemCount: filteredBooks.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        child: BookListItem(book: filteredBooks[index]),
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),
