@@ -3,6 +3,7 @@ import 'screens/home_screen.dart';
 import 'screens/add_book_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/book_details_screen.dart'; // Import the new screen
+import 'screens/edit_book_screen.dart'; // Import the EditBookScreen
 import 'models/book.dart'; // Import the Book class
 import 'services/book_service.dart'; // Import the BookService class
 import 'package:get_it/get_it.dart';
@@ -78,6 +79,7 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: {
         '/bookDetails': (context) => BookDetailsScreen(book: ModalRoute.of(context)!.settings.arguments as Book),
+        '/editBook': (context) => EditBookScreen(book: ModalRoute.of(context)!.settings.arguments as Book),
       },
     );
   }

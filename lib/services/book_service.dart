@@ -4,11 +4,13 @@ import 'package:path/path.dart';
 import '../models/book.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 
 class BookService {
   static const String _booksTable = 'books';
   static Database? _database;
   static final BookService _instance = BookService._internal();
+  final StreamController<List<Book>> _booksStreamController = StreamController<List<Book>>.broadcast();
 
   factory BookService() {
     return _instance;
@@ -41,6 +43,7 @@ class BookService {
       book.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    _notifyBookListChanged();
   }
 
   Future<void> updateBook(Book book) async {
@@ -51,6 +54,7 @@ class BookService {
       where: 'isbn = ?',
       whereArgs: [book.isbn],
     );
+    _notifyBookListChanged();
   }
 
   Future<void> deleteBook(String isbn) async {
@@ -60,6 +64,7 @@ class BookService {
       where: 'isbn = ?',
       whereArgs: [isbn],
     );
+    _notifyBookListChanged();
   }
 
   Future<List<Book>> getBooks() async {
@@ -75,6 +80,11 @@ class BookService {
     final books = await getBooks();
     books.sort((a, b) => a.title.compareTo(b.title));
     return books;
+  }
+
+  Stream<List<Book>> getBooksStreamSortedAlphabetically() {
+    _notifyBookListChanged();
+    return _booksStreamController.stream;
   }
 
   Future<void> exportLibrary(String filePath) async {
@@ -96,6 +106,7 @@ class BookService {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
+    _notifyBookListChanged();
   }
 
   Future<Book?> searchBookByNameOrISBN(String query) async {
@@ -117,5 +128,10 @@ class BookService {
       }
     }
     return null;
+  }
+
+  void _notifyBookListChanged() async {
+    final books = await getBooksSortedAlphabetically();
+    _booksStreamController.add(books);
   }
 }
