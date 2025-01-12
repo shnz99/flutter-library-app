@@ -104,7 +104,7 @@ class BookDetailsScreen extends StatelessWidget {
               SizedBox(height: 8.0),
               if (book.readDate != null)
                 Text(
-                  'Read Date: ${book.readDate}',
+                  'Read Date: ${book.readDate!.month.toString().padLeft(2, '0')}-${book.readDate!.year}',
                   style: TextStyle(fontSize: 18),
                 ),
               SizedBox(height: 8.0),
