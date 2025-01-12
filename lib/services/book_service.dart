@@ -88,25 +88,43 @@ class BookService {
   }
 
   Future<void> exportLibrary(String filePath) async {
-    final books = await getBooks();
-    final file = File(filePath);
-    await file.writeAsString(jsonEncode(books.map((b) => b.toJson()).toList()));
+    try {
+      final Database db = await database;
+      final List<Map<String, dynamic>> maps = await db.query(_booksTable);
+      final List<Book> books = List.generate(maps.length, (i) => Book.fromMap(maps[i]));
+      final String jsonData = jsonEncode(books.map((book) => book.toMap()).toList());
+      
+      final File file = File(filePath);
+      await file.writeAsString(jsonData);
+    } catch (e) {
+      throw Exception('Failed to export library: $e');
+    }
   }
 
   Future<void> importLibrary(String filePath) async {
-    final file = File(filePath);
-    final booksString = await file.readAsString();
-    final List<dynamic> booksJson = jsonDecode(booksString);
-    final books = booksJson.map((json) => Book.fromJson(json)).toList();
-    final db = await database;
-    for (var book in books) {
-      await db.insert(
-        _booksTable,
-        book.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+    try {
+      final File file = File(filePath);
+      final String jsonData = await file.readAsString();
+      final List<dynamic> booksJson = jsonDecode(jsonData);
+      
+      final Database db = await database;
+      await db.transaction((txn) async {
+        await txn.delete(_booksTable);
+        
+        for (var bookJson in booksJson) {
+          final Book book = Book.fromMap(bookJson as Map<String, dynamic>);
+          await txn.insert(
+            _booksTable,
+            book.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+      });
+      
+      _notifyBookListChanged();
+    } catch (e) {
+      throw Exception('Failed to import library: $e');
     }
-    _notifyBookListChanged();
   }
 
   Future<Book?> searchBookByNameOrISBN(String query) async {

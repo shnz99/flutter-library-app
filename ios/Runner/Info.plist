@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    // ...existing code...
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires access to the photo library to import/export library data.</string>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>This app requires access to the documents folder to import/export library data.</string>
+    // ...existing code...
+</dict>
+</plist>
