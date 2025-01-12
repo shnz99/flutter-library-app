@@ -175,7 +175,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   controller: _descriptionController,
                   decoration: InputDecoration(labelText: 'Description'),
                 ),
-                RatingBar(
+                RatingBar.builder(
                   initialRating: 0,
                   minRating: 1,
                   direction: Axis.horizontal,
