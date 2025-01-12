@@ -14,30 +14,50 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final BookService _bookService = GetIt.I<BookService>();
 
   void _exportLibrary() async {
-    String? filePath = await FilePicker.platform.saveFile(
-      dialogTitle: 'Please select an export location:',
-      fileName: 'library.json',
-    );
+    try {
+      String? filePath = await FilePicker.platform.saveFile(
+        dialogTitle: 'Please select an export location:',
+        fileName: 'library.json',
+      );
 
-    if (filePath != null) {
-      await _bookService.exportLibrary(filePath);
+      if (filePath != null) {
+        await _bookService.exportLibrary(filePath);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Library exported successfully!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Export cancelled.')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Library exported successfully!')),
+        SnackBar(content: Text('Failed to export library: $e')),
       );
     }
   }
 
   void _importLibrary() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['json'],
-    );
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+      );
 
-    if (result != null && result.files.single.path != null) {
-      String filePath = result.files.single.path!;
-      await _bookService.importLibrary(filePath);
+      if (result != null && result.files.single.path != null) {
+        String filePath = result.files.single.path!;
+        await _bookService.importLibrary(filePath);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Library imported successfully!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Import cancelled.')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Library imported successfully!')),
+        SnackBar(content: Text('Failed to import library: $e')),
       );
     }
   }
