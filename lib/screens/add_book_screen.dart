@@ -19,7 +19,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _isbnController = TextEditingController();
-  final _isbn10Controller = TextEditingController();
   final _publishedDateController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _myRatingController = TextEditingController();
@@ -30,7 +29,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _titleController.dispose();
     _authorController.dispose();
     _isbnController.dispose();
-    _isbn10Controller.dispose();
     _publishedDateController.dispose();
     _descriptionController.dispose();
     _myRatingController.dispose();
@@ -44,7 +42,15 @@ class _AddBookScreenState extends State<AddBookScreen> {
       return;
     }
 
-    final url = Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
+    final isISBN13 = RegExp(r'^\d{13}$').hasMatch(query);
+    final isISBN10 = RegExp(r'^\d{10}$').hasMatch(query);
+
+    final url = isISBN13
+        ? Uri.parse('https://www.googleapis.com/books/v1/volumes?q=isbn:$query')
+        : isISBN10
+            ? Uri.parse('https://www.googleapis.com/books/v1/volumes?q=isbn10:$query')
+            : Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
+
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -55,7 +61,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
           _titleController.text = bookData['title'] ?? '';
           _authorController.text = bookData['authors']?.join(', ') ?? '';
           _isbnController.text = bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '';
-          _isbn10Controller.text = bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_10', orElse: () => null)?['identifier'] ?? '';
           _publishedDateController.text = bookData['publishedDate']?.split('-')?.first ?? '';
           _descriptionController.text = bookData['description'] ?? '';
         });
@@ -106,7 +111,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
         title: _titleController.text,
         author: _authorController.text,
         isbn: _isbnController.text,
-        isbn10: _isbn10Controller.text,
         publishedDate: int.tryParse(_publishedDateController.text),
         description: _descriptionController.text,
         myRating: double.tryParse(_myRatingController.text),
@@ -155,17 +159,13 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 ),
                 TextFormField(
                   controller: _isbnController,
-                  decoration: InputDecoration(labelText: 'ISBN 13'),
+                  decoration: InputDecoration(labelText: 'ISBN'),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter the ISBN';
                     }
                     return null;
                   },
-                ),
-                TextFormField(
-                  controller: _isbn10Controller,
-                  decoration: InputDecoration(labelText: 'ISBN 10'),
                 ),
                 TextFormField(
                   controller: _publishedDateController,
@@ -175,9 +175,19 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   controller: _descriptionController,
                   decoration: InputDecoration(labelText: 'Description'),
                 ),
-                TextFormField(
-                  controller: _myRatingController,
-                  decoration: InputDecoration(labelText: 'My Rating'),
+                RatingBar.builder(
+                  initialRating: 0,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    _myRatingController.text = rating.toString();
+                  },
                 ),
                 SizedBox(height: 20),
                 Row(

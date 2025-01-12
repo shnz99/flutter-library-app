@@ -27,7 +27,7 @@ class BookService {
       join(await getDatabasesPath(), 'books_database.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE $_booksTable(isbn TEXT PRIMARY KEY, title TEXT, author TEXT, imageUrl TEXT, publishedDate INTEGER, description TEXT, isbn10 TEXT, myRating REAL, averageRating REAL)',
+          'CREATE TABLE $_booksTable(isbn TEXT PRIMARY KEY, title TEXT, author TEXT, imageUrl TEXT, publishedDate INTEGER, description TEXT, myRating REAL, averageRating REAL)',
         );
       },
       version: 1,
@@ -38,7 +38,7 @@ class BookService {
     final db = await database;
     await db.insert(
       _booksTable,
-      book.toJson(),
+      book.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -47,7 +47,7 @@ class BookService {
     final db = await database;
     await db.update(
       _booksTable,
-      book.toJson(),
+      book.toMap(),
       where: 'isbn = ?',
       whereArgs: [book.isbn],
     );
@@ -67,17 +67,7 @@ class BookService {
     final List<Map<String, dynamic>> maps = await db.query(_booksTable);
 
     return List.generate(maps.length, (i) {
-      return Book(
-        title: maps[i]['title'],
-        author: maps[i]['author'],
-        isbn: maps[i]['isbn'],
-        isbn10: maps[i]['isbn10'],
-        imageUrl: maps[i]['imageUrl'],
-        publishedDate: maps[i]['publishedDate'],
-        description: maps[i]['description'],
-        myRating: maps[i]['myRating']?.toDouble(),
-        averageRating: maps[i]['averageRating']?.toDouble(),
-      );
+      return Book.fromMap(maps[i]);
     });
   }
 
@@ -120,7 +110,6 @@ class BookService {
           title: bookData['title'] ?? '',
           author: bookData['authors']?.join(', ') ?? '',
           isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
-          isbn10: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_10', orElse: () => null)?['identifier'] ?? '',
           publishedDate: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
           description: bookData['description'] ?? '',
           averageRating: bookData['averageRating']?.toDouble(),
