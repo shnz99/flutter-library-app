@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/book.dart';
 import '../services/book_service.dart';
+import 'package:get_it/get_it.dart';
 
 class BookDetailsScreen extends StatelessWidget {
   final Book book;
-  final BookService _bookService = BookService();
+  final BookService _bookService = GetIt.I<BookService>();
 
   BookDetailsScreen({super.key, required this.book});
 
