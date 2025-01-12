@@ -48,46 +48,46 @@ class BookDetailsScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (book.imageUrl != null)
-              Center(
-                child: Image.network(book.imageUrl!),
-              ),
-            SizedBox(height: 16.0),
-            Text(
-              'Title: ${book.title}',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              'Author: ${book.author}',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 8.0),
-            if (book.publishedDate != null)
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              if (book.imageUrl != null)
+                Center(
+                  child: Image.network(book.imageUrl!),
+                ),
+              SizedBox(height: 16.0),
               Text(
-                'Published Date: ${book.publishedDate}',
+                'Title: ${book.title}',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                'Author: ${book.author}',
                 style: TextStyle(fontSize: 18),
               ),
-            SizedBox(height: 8.0),
-            if (book.description != null)
-              SingleChildScrollView(
-                child: Padding(
+              SizedBox(height: 8.0),
+              if (book.publishedDate != null)
+                Text(
+                  'Published Date: ${book.publishedDate}',
+                  style: TextStyle(fontSize: 18),
+                ),
+              SizedBox(height: 8.0),
+              if (book.description != null)
+                Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: Text(
                     'Description: ${book.description}',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
-              ),
-            if (book.averageRating != null)
-              Text(
-                'Average Rating: ${book.averageRating}',
-                style: TextStyle(fontSize: 18),
-              ),
-          ],
+              if (book.averageRating != null)
+                Text(
+                  'Average Rating: ${book.averageRating}',
+                  style: TextStyle(fontSize: 18),
+                ),
+            ],
+          ),
         ),
       ),
     );

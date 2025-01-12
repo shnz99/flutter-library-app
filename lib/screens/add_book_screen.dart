@@ -128,113 +128,91 @@ class _AddBookScreenState extends State<AddBookScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                controller: _titleController,
-                decoration: InputDecoration(labelText: 'Title'),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter the book title';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _authorController,
-                decoration: InputDecoration(labelText: 'Author'),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter the author';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _isbnController,
-                decoration: InputDecoration(labelText: 'ISBN 13'),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter the ISBN';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _isbn10Controller,
-                decoration: InputDecoration(labelText: 'ISBN 10'),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter the ISBN 10';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _publishedDateController,
-                decoration: InputDecoration(labelText: 'Published Date'),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter the published date';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter the description';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _myRatingController,
-                decoration: InputDecoration(labelText: 'My Rating'),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Please enter your rating';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _searchForBook,
-                      child: Text('Search for Book'),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  controller: _titleController,
+                  decoration: InputDecoration(labelText: 'Title'),
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter the book title';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _authorController,
+                  decoration: InputDecoration(labelText: 'Author'),
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter the author';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _isbnController,
+                  decoration: InputDecoration(labelText: 'ISBN 13'),
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter the ISBN';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _isbn10Controller,
+                  decoration: InputDecoration(labelText: 'ISBN 10'),
+                ),
+                TextFormField(
+                  controller: _publishedDateController,
+                  decoration: InputDecoration(labelText: 'Published Date'),
+                ),
+                TextFormField(
+                  controller: _descriptionController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                ),
+                TextFormField(
+                  controller: _myRatingController,
+                  decoration: InputDecoration(labelText: 'My Rating'),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _searchForBook,
+                        child: Text('Search for Book'),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _scanBarcode,
-                      child: Text('Scan Barcode'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _scanBarcode,
+                        child: Text('Scan Barcode'),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _addBook,
-                      child: Text('Submit Book'),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _addBook,
+                        child: Text('Submit Book'),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
