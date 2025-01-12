@@ -17,118 +17,116 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<bool> _requestStoragePermission() async {
     if (Platform.isAndroid) {
-      final status = await Permission.storage.status;
-      if (status.isDenied) {
-        final result = await Permission.storage.request();
-        return result.isGranted;
-      }
-      return status.isGranted;
+      // Request both storage and manage storage permissions
+      final storageStatus = await Permission.storage.request();
+      final manageStorageStatus = await Permission.manageExternalStorage.request();
+      
+      // Return true if either permission is granted
+      return storageStatus.isGranted || manageStorageStatus.isGranted;
     }
-    return true; // iOS doesn't need this permission
+    return true; // For iOS or other platforms
+  }
+
+  Future<void> _handlePermissionAndProceed({required Function() onGranted}) async {
+    final hasPermission = await _requestStoragePermission();
+    if (!hasPermission) {
+      if (!mounted) return;
+      
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Storage Permission Required'),
+          content: Text('This feature requires storage permission. Please grant the permission in app settings.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                await openAppSettings();
+              },
+              child: Text('Open Settings'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    
+    onGranted();
   }
 
   void _exportLibrary() async {
-    try {
-      final hasPermission = await _requestStoragePermission();
-      if (!hasPermission) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Storage permission is required to export library'),
-              backgroundColor: Colors.red,
-            ),
-          );
+    await _handlePermissionAndProceed(
+      onGranted: () async {
+        try {
+          String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+          if (selectedDirectory == null) return;
+
+          final timestamp = DateTime.now().millisecondsSinceEpoch;
+          String filePath = '$selectedDirectory${Platform.pathSeparator}library_export_$timestamp.json';
+          
+          await _bookService.exportLibrary(filePath);
+          
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Library exported successfully to: $filePath')),
+            );
+          }
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to export library: ${e.toString()}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         }
-        return;
-      }
-
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-      
-      if (selectedDirectory == null) {
-        return; // User cancelled the picker
-      }
-
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      String filePath = '$selectedDirectory${Platform.pathSeparator}library_export_$timestamp.json';
-      
-      await _bookService.exportLibrary(filePath);
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Library exported successfully to: $filePath'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to export library: ${e.toString()}'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-    }
+      },
+    );
   }
 
   void _importLibrary() async {
-    try {
-      final hasPermission = await _requestStoragePermission();
-      if (!hasPermission) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Storage permission is required to import library'),
-              backgroundColor: Colors.red,
-            ),
+    await _handlePermissionAndProceed(
+      onGranted: () async {
+        try {
+          FilePickerResult? result = await FilePicker.platform.pickFiles(
+            // Changed from custom type to any to avoid extension filtering issues
+            type: FileType.any,
           );
+          
+          if (result == null) return;
+
+          String? filePath = result.files.single.path;
+          if (filePath == null) throw Exception('Invalid file selection');
+          
+          // Add validation for JSON file
+          if (!filePath.toLowerCase().endsWith('.json')) {
+            throw Exception('Please select a JSON file');
+          }
+
+          await _bookService.importLibrary(filePath);
+          
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Library imported successfully')),
+            );
+          }
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to import library: ${e.toString()}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         }
-        return;
-      }
-
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.any, // Changed to any to avoid extension filtering issues
-        allowMultiple: false,
-      );
-      
-      if (result == null) {
-        return; // User cancelled the picker
-      }
-
-      String? filePath = result.files.single.path;
-      if (filePath == null) {
-        throw Exception('Invalid file selection');
-      }
-
-      // Verify if it's a JSON file
-      if (!filePath.toLowerCase().endsWith('.json')) {
-        throw Exception('Please select a JSON file');
-      }
-
-      await _bookService.importLibrary(filePath);
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Library imported successfully'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to import library: ${e.toString()}'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-    }
+      },
+    );
   }
 
   @override
