@@ -148,6 +148,37 @@ class BookService {
     return null;
   }
 
+  Future<Book?> searchForBook(String query) async {
+    final isISBN13 = RegExp(r'^\d{13}$').hasMatch(query);
+    final isISBN10 = RegExp(r'^\d{10}$').hasMatch(query);
+
+    final url = isISBN13
+        ? Uri.parse('https://www.googleapis.com/books/v1/volumes?q=isbn:$query')
+        : isISBN10
+            ? Uri.parse('https://www.googleapis.com/books/v1/volumes?q=isbn10:$query')
+            : Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['totalItems'] > 0) {
+        final bookData = data['items'][0]['volumeInfo'];
+        return Book(
+          title: bookData['title'] ?? '',
+          author: bookData['authors']?.join(', ') ?? '',
+          isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
+          publishedDate: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
+          description: bookData['description'] ?? '',
+        );
+      } else {
+        throw Exception('No book found');
+      }
+    } else {
+      throw Exception('Failed to fetch book details');
+    }
+  }
+
   void _notifyBookListChanged() async {
     final books = await getBooksSortedAlphabetically();
     _booksStreamController.add(books);
