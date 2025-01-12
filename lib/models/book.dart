@@ -7,6 +7,9 @@ class Book {
   String? description;
   double? myRating;
   double? averageRating;
+  String? category;
+  DateTime? readDate;
+  String? notes;
 
   Book({
     required this.title,
@@ -17,6 +20,9 @@ class Book {
     this.description,
     this.myRating,
     this.averageRating,
+    this.category,
+    this.readDate,
+    this.notes,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -30,6 +36,9 @@ class Book {
       description: json['description'],
       myRating: json['myRating']?.toDouble(),
       averageRating: json['averageRating']?.toDouble(),
+      category: json['category'],
+      readDate: json['readDate'] != null ? DateTime.parse(json['readDate']) : null,
+      notes: json['notes'],
     );
   }
 
@@ -43,6 +52,9 @@ class Book {
       'description': description,
       'myRating': myRating,
       'averageRating': averageRating,
+      'category': category,
+      'readDate': readDate?.toIso8601String(),
+      'notes': notes,
     };
   }
 
@@ -56,6 +68,9 @@ class Book {
       'description': description,
       'myRating': myRating,
       'averageRating': averageRating,
+      'category': category,
+      'readDate': readDate?.toIso8601String(),
+      'notes': notes,
     };
   }
 
@@ -69,11 +84,14 @@ class Book {
       description: map['description'],
       myRating: map['myRating']?.toDouble(),
       averageRating: map['averageRating']?.toDouble(),
+      category: map['category'],
+      readDate: map['readDate'] != null ? DateTime.parse(map['readDate']) : null,
+      notes: map['notes'],
     );
   }
 
   @override
   String toString() {
-    return 'Book{title: $title, author: $author, isbn: $isbn, imageUrl: $imageUrl, publishedDate: $publishedDate, description: $description, myRating: $myRating, averageRating: $averageRating}';
+    return 'Book{title: $title, author: $author, isbn: $isbn, imageUrl: $imageUrl, publishedDate: $publishedDate, description: $description, myRating: $myRating, averageRating: $averageRating, category: $category, readDate: $readDate, notes: $notes}';
   }
 }
