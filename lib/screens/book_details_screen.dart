@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../models/book.dart';
 import '../services/book_service.dart';
 import 'package:get_it/get_it.dart';
@@ -82,10 +83,32 @@ class BookDetailsScreen extends StatelessWidget {
                   ),
                 ),
               if (book.averageRating != null)
-                Text(
-                  'Average Rating: ${book.averageRating}',
-                  style: TextStyle(fontSize: 18),
+                RatingBarIndicator(
+                  rating: book.averageRating!,
+                  itemBuilder: (context, index) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  itemCount: 5,
+                  itemSize: 20.0,
+                  direction: Axis.horizontal,
                 ),
+              SizedBox(height: 8.0),
+              RatingBar(
+                initialRating: book.myRating ?? 0,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  book.myRating = rating;
+                  _bookService.updateBook(book);
+                },
+              ),
             ],
           ),
         ),

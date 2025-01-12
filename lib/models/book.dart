@@ -51,6 +51,34 @@ class Book {
     };
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'author': author,
+      'isbn': isbn,
+      'isbn10': isbn10,
+      'imageUrl': imageUrl,
+      'publishedDate': publishedDate,
+      'description': description,
+      'myRating': myRating,
+      'averageRating': averageRating,
+    };
+  }
+
+  factory Book.fromMap(Map<String, dynamic> map) {
+    return Book(
+      title: map['title'],
+      author: map['author'],
+      isbn: map['isbn'],
+      isbn10: map['isbn10'],
+      imageUrl: map['imageUrl'],
+      publishedDate: map['publishedDate'],
+      description: map['description'],
+      myRating: map['myRating']?.toDouble(),
+      averageRating: map['averageRating']?.toDouble(),
+    );
+  }
+
   @override
   String toString() {
     return 'Book{title: $title, author: $author, isbn: $isbn, isbn10: $isbn10, imageUrl: $imageUrl, publishedDate: $publishedDate, description: $description, myRating: $myRating, averageRating: $averageRating}';

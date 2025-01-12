@@ -175,9 +175,19 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   controller: _descriptionController,
                   decoration: InputDecoration(labelText: 'Description'),
                 ),
-                TextFormField(
-                  controller: _myRatingController,
-                  decoration: InputDecoration(labelText: 'My Rating'),
+                RatingBar(
+                  initialRating: 0,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    _myRatingController.text = rating.toString();
+                  },
                 ),
                 SizedBox(height: 20),
                 Row(

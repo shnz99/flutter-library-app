@@ -38,7 +38,7 @@ class BookService {
     final db = await database;
     await db.insert(
       _booksTable,
-      book.toJson(),
+      book.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -47,7 +47,7 @@ class BookService {
     final db = await database;
     await db.update(
       _booksTable,
-      book.toJson(),
+      book.toMap(),
       where: 'isbn = ?',
       whereArgs: [book.isbn],
     );
@@ -67,17 +67,7 @@ class BookService {
     final List<Map<String, dynamic>> maps = await db.query(_booksTable);
 
     return List.generate(maps.length, (i) {
-      return Book(
-        title: maps[i]['title'],
-        author: maps[i]['author'],
-        isbn: maps[i]['isbn'],
-        isbn10: maps[i]['isbn10'],
-        imageUrl: maps[i]['imageUrl'],
-        publishedDate: maps[i]['publishedDate'],
-        description: maps[i]['description'],
-        myRating: maps[i]['myRating']?.toDouble(),
-        averageRating: maps[i]['averageRating']?.toDouble(),
-      );
+      return Book.fromMap(maps[i]);
     });
   }
 
