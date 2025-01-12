@@ -20,6 +20,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _publishedDateController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _myRatingController = TextEditingController();
+  final _categoryController = TextEditingController();
+  final _readDateController = TextEditingController();
+  final _notesController = TextEditingController();
   final BookService _bookService = GetIt.I<BookService>();
 
   @override
@@ -30,6 +33,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _publishedDateController.dispose();
     _descriptionController.dispose();
     _myRatingController.dispose();
+    _categoryController.dispose();
+    _readDateController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -74,6 +80,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
         publishedDate: int.tryParse(_publishedDateController.text),
         description: _descriptionController.text,
         myRating: double.tryParse(_myRatingController.text),
+        category: _categoryController.text,
+        readDate: _readDateController.text.isNotEmpty ? DateTime.parse(_readDateController.text) : null,
+        notes: _notesController.text,
       );
       try {
         await _bookService.addBook(book);
@@ -160,6 +169,18 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 TextFormField(
                   controller: _descriptionController,
                   decoration: InputDecoration(labelText: 'Description'),
+                ),
+                TextFormField(
+                  controller: _categoryController,
+                  decoration: InputDecoration(labelText: 'Category'),
+                ),
+                TextFormField(
+                  controller: _readDateController,
+                  decoration: InputDecoration(labelText: 'Read Date (YYYY-MM-DD)'),
+                ),
+                TextFormField(
+                  controller: _notesController,
+                  decoration: InputDecoration(labelText: 'Notes'),
                 ),
                 RatingBar.builder(
                   initialRating: 0,

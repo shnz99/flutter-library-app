@@ -96,6 +96,24 @@ class BookDetailsScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
+              if (book.category != null)
+                Text(
+                  'Category: ${book.category}',
+                  style: TextStyle(fontSize: 18),
+                ),
+              SizedBox(height: 8.0),
+              if (book.readDate != null)
+                Text(
+                  'Read Date: ${book.readDate}',
+                  style: TextStyle(fontSize: 18),
+                ),
+              SizedBox(height: 8.0),
+              if (book.notes != null)
+                Text(
+                  'Notes: ${book.notes}',
+                  style: TextStyle(fontSize: 18),
+                ),
+              SizedBox(height: 8.0),
               if (book.averageRating != null)
                 RatingBarIndicator(
                   rating: book.averageRating!,
