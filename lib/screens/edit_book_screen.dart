@@ -110,7 +110,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
         description: _descriptionController.text,
         myRating: double.tryParse(_myRatingController.text),
         category: _categoryController.text,
-        readDate: _readDateController.text.isNotEmpty ? DateTime.parse(_readDateController.text) : null,
+        readDate: _readDateController.text.isNotEmpty ? DateTime.parse('${_readDateController.text.split('-')[1]}-${_readDateController.text.split('-')[0]}-01') : null,
         notes: _notesController.text,
       );
       try {
