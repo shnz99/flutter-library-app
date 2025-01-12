@@ -36,7 +36,9 @@ class _EditBookScreenState extends State<EditBookScreen> {
     _descriptionController.text = widget.book.description ?? '';
     _myRatingController.text = widget.book.myRating?.toString() ?? '';
     _categoryController.text = widget.book.category ?? '';
-    _readDateController.text = widget.book.readDate?.toIso8601String() ?? '';
+    _readDateController.text = widget.book.readDate != null
+        ? '${widget.book.readDate!.month.toString().padLeft(2, '0')}-${widget.book.readDate!.year.toString().padLeft(4, '0')}'
+        : '';
     _notesController.text = widget.book.notes ?? '';
   }
 
@@ -178,7 +180,17 @@ class _EditBookScreenState extends State<EditBookScreen> {
                 ),
                 TextFormField(
                   controller: _readDateController,
-                  decoration: InputDecoration(labelText: 'Read Date (YYYY-MM-DD)'),
+                  decoration: InputDecoration(labelText: 'Read Date (MM-YYYY)'),
+                  keyboardType: TextInputType.datetime,
+                  validator: (value) {
+                    if (value != null && value.isNotEmpty) {
+                      final parts = value.split('-');
+                      if (parts.length != 2 || parts[0].length != 2 || parts[1].length != 4) {
+                        return 'Please enter a valid date (MM-YYYY)';
+                      }
+                    }
+                    return null;
+                  },
                 ),
                 TextFormField(
                   controller: _notesController,
