@@ -5,6 +5,7 @@ import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class AddBookScreen extends StatefulWidget {
   const AddBookScreen({super.key});
@@ -18,8 +19,10 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _isbnController = TextEditingController();
+  final _isbn10Controller = TextEditingController();
   final _publishedDateController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _myRatingController = TextEditingController();
   final BookService _bookService = GetIt.I<BookService>();
 
   @override
@@ -27,8 +30,10 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _titleController.dispose();
     _authorController.dispose();
     _isbnController.dispose();
+    _isbn10Controller.dispose();
     _publishedDateController.dispose();
     _descriptionController.dispose();
+    _myRatingController.dispose();
     super.dispose();
   }
 
@@ -50,6 +55,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
           _titleController.text = bookData['title'] ?? '';
           _authorController.text = bookData['authors']?.join(', ') ?? '';
           _isbnController.text = bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '';
+          _isbn10Controller.text = bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_10', orElse: () => null)?['identifier'] ?? '';
           _publishedDateController.text = bookData['publishedDate']?.split('-')?.first ?? '';
           _descriptionController.text = bookData['description'] ?? '';
         });
@@ -100,8 +106,10 @@ class _AddBookScreenState extends State<AddBookScreen> {
         title: _titleController.text,
         author: _authorController.text,
         isbn: _isbnController.text,
+        isbn10: _isbn10Controller.text,
         publishedDate: int.tryParse(_publishedDateController.text),
         description: _descriptionController.text,
+        myRating: double.tryParse(_myRatingController.text),
       );
       try {
         await _bookService.addBook(book);
@@ -155,6 +163,16 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 },
               ),
               TextFormField(
+                controller: _isbn10Controller,
+                decoration: InputDecoration(labelText: 'ISBN 10'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please enter the ISBN 10';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
                 controller: _publishedDateController,
                 decoration: InputDecoration(labelText: 'Published Date'),
                 validator: (value) {
@@ -170,6 +188,16 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'Please enter the description';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _myRatingController,
+                decoration: InputDecoration(labelText: 'My Rating'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please enter your rating';
                   }
                   return null;
                 },

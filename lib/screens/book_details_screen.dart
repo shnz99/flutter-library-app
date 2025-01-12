@@ -82,6 +82,11 @@ class BookDetailsScreen extends StatelessWidget {
                   ),
                 ),
               ),
+            if (book.averageRating != null)
+              Text(
+                'Average Rating: ${book.averageRating}',
+                style: TextStyle(fontSize: 18),
+              ),
           ],
         ),
       ),
