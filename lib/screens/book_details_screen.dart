@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../models/book.dart';
 import '../services/book_service.dart';
 import 'package:get_it/get_it.dart';
+import 'edit_book_screen.dart';
 
 class BookDetailsScreen extends StatelessWidget {
   final Book book;
@@ -35,12 +36,25 @@ class BookDetailsScreen extends StatelessWidget {
     }
   }
 
+  void _editBook(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditBookScreen(book: book),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(book.title),
         actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () => _editBook(context),
+          ),
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () => _removeBook(context),
