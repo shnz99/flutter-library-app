@@ -91,7 +91,8 @@ class BookService {
     try {
       final books = await getBooks();
       final file = File(filePath);
-      await file.writeAsString(jsonEncode(books.map((b) => b.toJson()).toList()));
+      final jsonBooks = jsonEncode(books.map((b) => b.toJson()).toList());
+      await file.writeAsString(jsonBooks);
     } catch (e) {
       throw Exception('Failed to export library: $e');
     }
