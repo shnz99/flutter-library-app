@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/book.dart';
 import '../services/book_service.dart';
 import '../widgets/book_list_item.dart';
+import 'package:get_it/get_it.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final BookService _bookService = BookService();
+  final BookService _bookService = GetIt.I<BookService>();
   List<Book> _books = [];
   String _searchQuery = '';
 
