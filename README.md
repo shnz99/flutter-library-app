@@ -5,6 +5,12 @@ This mobile app allows users to track and manage the books they have read. Users
 ## Current App Features
 - Track and manage books
 - Add books by searching or scanning barcodes
+- Export and import library
+- Categorize books
+- Add notes to books
+- Search through library
+- View book details
+- Rate books
 - Works offline
 
 ## Current Build Version
