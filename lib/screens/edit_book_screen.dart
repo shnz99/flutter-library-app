@@ -100,6 +100,20 @@ class _EditBookScreenState extends State<EditBookScreen> {
     );
   }
 
+  Future<bool> _categoryExists(String category) async {
+    final books = await _bookService.getBooks();
+    return books.any((book) => book.category?.toLowerCase() == category.toLowerCase());
+  }
+
+  void _validateCategoryInput(String category) {
+    if (category.isEmpty) {
+      throw Exception('Category cannot be empty');
+    }
+    if (category.length < 3) {
+      throw Exception('Category must be at least 3 characters long');
+    }
+  }
+
   void _saveBook() async {
     if (_formKey.currentState?.validate() ?? false) {
       final updatedBook = Book(
@@ -177,6 +191,14 @@ class _EditBookScreenState extends State<EditBookScreen> {
                 TextFormField(
                   controller: _categoryController,
                   decoration: InputDecoration(labelText: 'Category'),
+                  validator: (value) {
+                    try {
+                      _validateCategoryInput(value ?? '');
+                    } catch (e) {
+                      return e.toString();
+                    }
+                    return null;
+                  },
                 ),
                 TextFormField(
                   controller: _readDateController,
