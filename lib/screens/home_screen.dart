@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   title: Text(category ?? ''),
                   onTap: () {
-                    setState(() => _selectedCategory = category);
+                    setState(() => _selectedCategory = category?.isEmpty ?? true ? 'None' : category);
                     Navigator.pop(context);
                   },
                 ),
