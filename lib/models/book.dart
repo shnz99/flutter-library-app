@@ -20,10 +20,10 @@ class Book {
     this.description,
     this.myRating,
     this.averageRating,
-    this.category,
+    String? category,
     this.readDate,
     this.notes,
-  });
+  }) : category = category?.isEmpty ?? true ? 'None' : category;
 
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
@@ -36,7 +36,7 @@ class Book {
       description: json['description'],
       myRating: json['myRating']?.toDouble(),
       averageRating: json['averageRating']?.toDouble(),
-      category: json['category'],
+      category: (json['category'] as String?)?.isEmpty ?? true ? 'None' : json['category'],
       readDate: json['readDate'] != null ? DateTime.parse(json['readDate']) : null,
       notes: json['notes'],
     );
@@ -84,7 +84,7 @@ class Book {
       description: map['description'],
       myRating: map['myRating']?.toDouble(),
       averageRating: map['averageRating']?.toDouble(),
-      category: map['category'],
+      category: (map['category'] as String?)?.isEmpty ?? true ? 'None' : map['category'],
       readDate: map['readDate'] != null ? DateTime.parse(map['readDate']) : null,
       notes: map['notes'],
     );

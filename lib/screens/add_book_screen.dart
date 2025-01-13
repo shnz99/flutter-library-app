@@ -80,7 +80,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
         publishedDate: int.tryParse(_publishedDateController.text),
         description: _descriptionController.text,
         myRating: double.tryParse(_myRatingController.text),
-        category: _categoryController.text,
+        category: _categoryController.text.isEmpty ? 'None' : _categoryController.text,
         readDate: _readDateController.text.isNotEmpty ? DateTime.parse(_readDateController.text) : null,
         notes: _notesController.text,
       );
