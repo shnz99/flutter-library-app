@@ -90,6 +90,34 @@ class Book {
     );
   }
 
+  Book copyWith({
+    String? title,
+    String? author,
+    String? isbn,
+    String? imageUrl,
+    int? publishedDate,
+    String? description,
+    double? myRating,
+    double? averageRating,
+    String? category,
+    DateTime? readDate,
+    String? notes,
+  }) {
+    return Book(
+      title: title ?? this.title,
+      author: author ?? this.author,
+      isbn: isbn ?? this.isbn,
+      imageUrl: imageUrl ?? this.imageUrl,
+      publishedDate: publishedDate ?? this.publishedDate,
+      description: description ?? this.description,
+      myRating: myRating ?? this.myRating,
+      averageRating: averageRating ?? this.averageRating,
+      category: category ?? this.category,
+      readDate: readDate ?? this.readDate,
+      notes: notes ?? this.notes,
+    );
+  }
+
   @override
   String toString() {
     return 'Book{title: $title, author: $author, isbn: $isbn, imageUrl: $imageUrl, publishedDate: $publishedDate, description: $description, myRating: $myRating, averageRating: $averageRating, category: $category, readDate: $readDate, notes: $notes}';
