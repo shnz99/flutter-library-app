@@ -40,10 +40,16 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _initializeDatabase();
+    _showLoadingScreen();
   }
 
   void _initializeDatabase() async {
     await _bookService.initDatabase();
+  }
+
+  void _showLoadingScreen() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {});
   }
 
   @override
@@ -53,34 +59,57 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         brightness: Brightness.light,
       ),
-      home: Scaffold(
-        body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
+      home: _selectedIndex == -1
+          ? LoadingScreen()
+          : Scaffold(
+              body: Center(
+                child: _widgetOptions.elementAt(_selectedIndex),
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.add),
+                    label: 'Add Book',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.settings),
+                    label: 'Settings',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                selectedItemColor: Colors.amber[800],
+                onTap: _onItemTapped,
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Add Book',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
-      ),
       routes: {
         '/bookDetails': (context) => BookDetailsScreen(book: ModalRoute.of(context)!.settings.arguments as Book),
         '/editBook': (context) => EditBookScreen(book: ModalRoute.of(context)!.settings.arguments as Book),
       },
+    );
+  }
+}
+
+class LoadingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/placeholder.png', width: 100, height: 100),
+            SizedBox(height: 20),
+            Text(
+              'Mobile Library',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
