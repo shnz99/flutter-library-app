@@ -20,8 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     // For Android 13 and above
     if (await Permission.photos.request().isGranted &&
-        await Permission.videos.request().isGranted &&
-        await Permission.audio.request().isGranted) {
+        await Permission.videos.request().isGranted) {
       return true;
     }
     // For Android 12 and below

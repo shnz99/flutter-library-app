@@ -130,31 +130,7 @@ class BookService {
     }
   }
 
-  Future<Book?> searchBookByNameOrISBN(String query) async {
-    final url = Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['totalItems'] > 0) {
-        final bookData = data['items'][0]['volumeInfo'];
-        return Book(
-          title: bookData['title'] ?? '',
-          author: bookData['authors']?.join(', ') ?? '',
-          isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
-          publishedDate: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
-          description: bookData['description'] ?? '',
-          averageRating: bookData['averageRating']?.toDouble(),
-          category: bookData['categories']?.join(', ') ?? '',
-          readDate: bookData['readDate'] != null ? DateTime.parse(bookData['readDate']) : null,
-          notes: bookData['notes'] ?? '',
-        );
-      }
-    }
-    return null;
-  }
-
-  Future<Book?> searchForBook(String query) async {
+  Future<List<Book>> searchForBook(String query) async {
     final isISBN13 = RegExp(r'^\d{13}$').hasMatch(query);
     final isISBN10 = RegExp(r'^\d{10}$').hasMatch(query);
 
@@ -169,16 +145,24 @@ class BookService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['totalItems'] > 0) {
-        final bookData = data['items'][0]['volumeInfo'];
-        return Book(
-          title: bookData['title'] ?? '',
-          author: bookData['authors']?.join(', ') ?? '',
-          isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
-          publishedDate: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
-          description: bookData['description'] ?? '',
-        );
+        final List<Book> books = [];
+        for (var item in data['items']) {
+          final bookData = item['volumeInfo'];
+          books.add(Book(
+            title: bookData['title'] ?? '',
+            author: bookData['authors']?.join(', ') ?? '',
+            isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
+            publishedDate: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
+            description: bookData['description'] ?? '',
+            averageRating: bookData['averageRating']?.toDouble(),
+            category: bookData['categories']?.join(', ') ?? '',
+            readDate: bookData['readDate'] != null ? DateTime.parse(bookData['readDate']) : null,
+            notes: bookData['notes'] ?? '',
+          ));
+        }
+        return books;
       } else {
-        throw Exception('No book found');
+        throw Exception('No books found');
       }
     } else {
       throw Exception('Failed to fetch book details');
