@@ -17,12 +17,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<bool> _requestStoragePermission() async {
     if (Platform.isAndroid) {
-      // Request both storage and manage storage permissions
       final storageStatus = await Permission.storage.request();
-      final manageStorageStatus = await Permission.manageExternalStorage.request();
-      
-      // Return true if either permission is granted
-      return storageStatus.isGranted || manageStorageStatus.isGranted;
+      return storageStatus.isGranted;
     }
     return true; // For iOS or other platforms
   }
@@ -94,7 +90,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onGranted: () async {
         try {
           FilePickerResult? result = await FilePicker.platform.pickFiles(
-            // Changed from custom type to any to avoid extension filtering issues
             type: FileType.any,
           );
           
@@ -103,7 +98,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           String? filePath = result.files.single.path;
           if (filePath == null) throw Exception('Invalid file selection');
           
-          // Add validation for JSON file
           if (!filePath.toLowerCase().endsWith('.json')) {
             throw Exception('Please select a JSON file');
           }
