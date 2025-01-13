@@ -101,22 +101,47 @@ class _AddBookScreenState extends State<AddBookScreen> {
     }
 
     try {
-      final book = await _bookService.searchForBook(query);
-      if (book != null) {
-        setState(() {
-          _titleController.text = book.title;
-          _authorController.text = book.author;
-          _isbnController.text = book.isbn;
-          _publishedDateController.text = book.publishedDate?.toString() ?? '';
-          _descriptionController.text = book.description ?? '';
-        });
-        _showSuccessMessage('Book details updated successfully!');
+      final books = await _bookService.searchForBook(query);
+      if (books.isNotEmpty) {
+        _showBookSelectionDialog(books);
       } else {
-        _showErrorMessage('No book found');
+        _showErrorMessage('No books found');
       }
     } catch (e) {
       _showErrorMessage('Failed to fetch book details');
     }
+  }
+
+  void _showBookSelectionDialog(List<Book> books) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select a Book'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: books.map((book) {
+                return ListTile(
+                  title: Text(book.title),
+                  subtitle: Text(book.author),
+                  onTap: () {
+                    setState(() {
+                      _titleController.text = book.title;
+                      _authorController.text = book.author;
+                      _isbnController.text = book.isbn;
+                      _publishedDateController.text = book.publishedDate?.toString() ?? '';
+                      _descriptionController.text = book.description ?? '';
+                    });
+                    Navigator.pop(context);
+                    _showSuccessMessage('Book details updated successfully!');
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
