@@ -6,9 +6,8 @@
     
     <!-- For Android 13 and above -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
     <application
-        android:label="flutter_library_app"
+        android:label="Mobile Library"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
