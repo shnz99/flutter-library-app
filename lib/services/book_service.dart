@@ -152,6 +152,7 @@ class BookService {
             title: bookData['title'] ?? '',
             author: bookData['authors']?.join(', ') ?? '',
             isbn: bookData['industryIdentifiers']?.firstWhere((id) => id['type'] == 'ISBN_13', orElse: () => null)?['identifier'] ?? '',
+            imageUrl: bookData['imageLinks']?['thumbnail'], // Pba27
             publishedDate: int.tryParse(bookData['publishedDate']?.split('-')?.first ?? ''),
             description: bookData['description'] ?? '',
             averageRating: bookData['averageRating']?.toDouble(),

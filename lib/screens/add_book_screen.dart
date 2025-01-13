@@ -122,6 +122,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
             child: Column(
               children: books.map((book) {
                 return ListTile(
+                  leading: book.imageUrl != null
+                      ? Image.network(book.imageUrl!)
+                      : Image.asset('assets/images/placeholder.png'), // P68e3
                   title: Text(book.title),
                   subtitle: Text(book.author),
                   onTap: () {
