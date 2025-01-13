@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Book Tracker',
+      title: 'Mobile Library',
       theme: ThemeData(
         brightness: Brightness.light,
       ),
