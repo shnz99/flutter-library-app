@@ -67,10 +67,11 @@ class BookDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (book.imageUrl != null)
-                Center(
-                  child: Image.network(book.imageUrl!),
-                ),
+              Center(
+                child: book.imageUrl != null
+                    ? Image.network(book.imageUrl!)
+                    : Image.asset('assets/images/placeholder.png'),
+              ),
               SizedBox(height: 16.0),
               Text(
                 'Title: ${book.title}',

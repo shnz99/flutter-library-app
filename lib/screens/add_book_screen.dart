@@ -24,6 +24,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final _readDateController = TextEditingController();
   final _notesController = TextEditingController();
   final BookService _bookService = GetIt.I<BookService>();
+  String? _imageUrl;
 
   @override
   void dispose() {
@@ -77,6 +78,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
         title: _titleController.text,
         author: _authorController.text,
         isbn: _isbnController.text,
+        imageUrl: _imageUrl,
         publishedDate: int.tryParse(_publishedDateController.text),
         description: _descriptionController.text,
         myRating: double.tryParse(_myRatingController.text),
@@ -122,6 +124,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
             child: Column(
               children: books.map((book) {
                 return ListTile(
+                  leading: book.imageUrl != null
+                      ? Image.network(book.imageUrl!)
+                      : Image.asset('assets/images/placeholder.png'),
                   title: Text(book.title),
                   subtitle: Text(book.author),
                   onTap: () {
@@ -131,6 +136,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       _isbnController.text = book.isbn;
                       _publishedDateController.text = book.publishedDate?.toString() ?? '';
                       _descriptionController.text = book.description ?? '';
+                      _imageUrl = book.imageUrl;
                     });
                     Navigator.pop(context);
                     _showSuccessMessage('Book details updated successfully!');
