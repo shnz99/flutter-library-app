@@ -63,7 +63,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onGranted: () async {
         try {
           String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-          if (selectedDirectory == null) return;
 
           final timestamp = DateTime.now().millisecondsSinceEpoch;
           String filePath = '$selectedDirectory${Platform.pathSeparator}library_export_$timestamp.json';
@@ -101,10 +100,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           if (result == null) return;
 
           String? filePath = result.files.single.path;
-          if (filePath == null) throw Exception('Invalid file selection');
           
           // Add validation for JSON file
-          if (!filePath.toLowerCase().endsWith('.json')) {
+          if (filePath!.toLowerCase().endsWith('.json')) {
             throw Exception('Please select a JSON file');
           }
 
