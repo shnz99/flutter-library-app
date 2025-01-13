@@ -20,10 +20,10 @@ class Book {
     this.description,
     this.myRating,
     this.averageRating,
-    this.category,
+    String? category,
     this.readDate,
     this.notes,
-  });
+  }) : category = category?.isEmpty ?? true ? 'None' : category;
 
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
@@ -36,7 +36,7 @@ class Book {
       description: json['description'],
       myRating: json['myRating']?.toDouble(),
       averageRating: json['averageRating']?.toDouble(),
-      category: json['category'],
+      category: (json['category'] as String?)?.isEmpty ?? true ? 'None' : json['category'],
       readDate: json['readDate'] != null ? DateTime.parse(json['readDate']) : null,
       notes: json['notes'],
     );
@@ -84,9 +84,37 @@ class Book {
       description: map['description'],
       myRating: map['myRating']?.toDouble(),
       averageRating: map['averageRating']?.toDouble(),
-      category: map['category'],
+      category: (map['category'] as String?)?.isEmpty ?? true ? 'None' : map['category'],
       readDate: map['readDate'] != null ? DateTime.parse(map['readDate']) : null,
       notes: map['notes'],
+    );
+  }
+
+  Book copyWith({
+    String? title,
+    String? author,
+    String? isbn,
+    String? imageUrl,
+    int? publishedDate,
+    String? description,
+    double? myRating,
+    double? averageRating,
+    String? category,
+    DateTime? readDate,
+    String? notes,
+  }) {
+    return Book(
+      title: title ?? this.title,
+      author: author ?? this.author,
+      isbn: isbn ?? this.isbn,
+      imageUrl: imageUrl ?? this.imageUrl,
+      publishedDate: publishedDate ?? this.publishedDate,
+      description: description ?? this.description,
+      myRating: myRating ?? this.myRating,
+      averageRating: averageRating ?? this.averageRating,
+      category: category ?? this.category,
+      readDate: readDate ?? this.readDate,
+      notes: notes ?? this.notes,
     );
   }
 

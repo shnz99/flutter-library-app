@@ -96,11 +96,10 @@ class BookDetailsScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
-              if (book.category != null)
-                Text(
-                  'Category: ${book.category}',
-                  style: TextStyle(fontSize: 18),
-                ),
+              Text(
+                'Category: ${book.category?.isEmpty ?? true ? 'None' : book.category}',
+                style: TextStyle(fontSize: 18),
+              ),
               SizedBox(height: 8.0),
               if (book.readDate != null)
                 Text(

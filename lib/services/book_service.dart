@@ -38,9 +38,10 @@ class BookService {
 
   Future<void> addBook(Book book) async {
     final db = await database;
+    final bookToAdd = book.category?.isEmpty ?? true ? book.copyWith(category: 'None') : book;
     await db.insert(
       _booksTable,
-      book.toMap(),
+      bookToAdd.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     _notifyBookListChanged();
@@ -48,9 +49,10 @@ class BookService {
 
   Future<void> updateBook(Book book) async {
     final db = await database;
+    final bookToUpdate = book.category?.isEmpty ?? true ? book.copyWith(category: 'None') : book;
     await db.update(
       _booksTable,
-      book.toMap(),
+      bookToUpdate.toMap(),
       where: 'isbn = ?',
       whereArgs: [book.isbn],
     );
@@ -72,7 +74,8 @@ class BookService {
     final List<Map<String, dynamic>> maps = await db.query(_booksTable);
 
     return List.generate(maps.length, (i) {
-      return Book.fromMap(maps[i]);
+      final book = Book.fromMap(maps[i]);
+      return book.category?.isEmpty ?? true ? book.copyWith(category: 'None') : book;
     });
   }
 
