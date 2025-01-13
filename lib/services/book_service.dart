@@ -38,6 +38,10 @@ class BookService {
 
   Future<void> addBook(Book book) async {
     final db = await database;
+    final existingCategory = await _getExistingCategory(book.category);
+    if (existingCategory != null) {
+      book.category = existingCategory;
+    }
     await db.insert(
       _booksTable,
       book.toMap(),
@@ -48,6 +52,10 @@ class BookService {
 
   Future<void> updateBook(Book book) async {
     final db = await database;
+    final existingCategory = await _getExistingCategory(book.category);
+    if (existingCategory != null) {
+      book.category = existingCategory;
+    }
     await db.update(
       _booksTable,
       book.toMap(),
@@ -203,6 +211,21 @@ class BookService {
       return 'Category already exists';
     }
     return '';
+  }
+
+  Future<String?> _getExistingCategory(String? category) async {
+    if (category == null || category.isEmpty) return null;
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      _booksTable,
+      where: 'LOWER(category) = ?',
+      whereArgs: [category.toLowerCase()],
+      limit: 1,
+    );
+    if (maps.isNotEmpty) {
+      return maps.first['category'] as String?;
+    }
+    return null;
   }
 
   void _notifyBookListChanged() async {
