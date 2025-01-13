@@ -116,6 +116,12 @@ class _EditBookScreenState extends State<EditBookScreen> {
 
   void _saveBook() async {
     if (_formKey.currentState?.validate() ?? false) {
+      final category = _categoryController.text;
+      if (await _categoryExists(category)) {
+        _showErrorMessage('Category already exists');
+        return;
+      }
+
       final updatedBook = Book(
         title: _titleController.text,
         author: _authorController.text,
@@ -123,7 +129,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
         publishedDate: int.tryParse(_publishedDateController.text),
         description: _descriptionController.text,
         myRating: double.tryParse(_myRatingController.text),
-        category: _categoryController.text,
+        category: category,
         readDate: _readDateController.text.isNotEmpty ? DateTime.parse('${_readDateController.text.split('-')[1]}-${_readDateController.text.split('-')[0]}-01') : null,
         notes: _notesController.text,
       );

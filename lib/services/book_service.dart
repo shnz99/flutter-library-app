@@ -182,6 +182,29 @@ class BookService {
     }
   }
 
+  Future<bool> categoryExists(String category) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      _booksTable,
+      where: 'LOWER(category) = ?',
+      whereArgs: [category.toLowerCase()],
+    );
+    return maps.isNotEmpty;
+  }
+
+  Future<String> validateCategoryInput(String category) async {
+    if (category.isEmpty) {
+      return 'Category cannot be empty';
+    }
+    if (category.length < 3) {
+      return 'Category must be at least 3 characters long';
+    }
+    if (await categoryExists(category)) {
+      return 'Category already exists';
+    }
+    return '';
+  }
+
   void _notifyBookListChanged() async {
     final books = await getBooksSortedAlphabetically();
     _booksStreamController.add(books);
