@@ -23,6 +23,10 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     _graphDataFuture = _bookService.getGraphData();
   }
 
+  String _formatYear(int year) {
+    return "'${year.toString().substring(2)}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,14 +92,19 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                         LineChartBarData(
                           spots: snapshot.data!,
                           isCurved: true,
-                          color: Colors.blue,
+                          colors: [Colors.blue],
                           barWidth: 4,
                           belowBarData: BarAreaData(show: false),
                         ),
                       ],
                       titlesData: FlTitlesData(
-                        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
-                        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
+                        leftTitles: SideTitles(showTitles: true),
+                        bottomTitles: SideTitles(
+                          showTitles: true,
+                          getTitles: (value) {
+                            return _formatYear(value.toInt());
+                          },
+                        ),
                       ),
                       borderData: FlBorderData(show: true),
                     ),
