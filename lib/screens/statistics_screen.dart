@@ -84,34 +84,43 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return Center(child: Text('No data for graph'));
               } else {
-                return SizedBox(
-                  height: 200,
-                  child: LineChart(
-                    LineChartData(
-                      lineBarsData: [
-                        LineChartBarData(
-                          spots: snapshot.data!,
-                          isCurved: true,
-                          color: Colors.blue,
-                          barWidth: 4,
-                          belowBarData: BarAreaData(show: false),
-                        ),
-                      ],
-                      titlesData: FlTitlesData(
-                        leftTitles: AxisTitles(
-                          sideTitles: SideTitles(showTitles: true),
-                        ),
-                        bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 22,
-                            getTitlesWidget: (value, meta) {
-                              return Text(_formatYear(value.toInt()));
-                            },
+                return Container(
+                  margin: EdgeInsets.all(25),
+                  child: SizedBox(
+                    height: 200,
+                    child: LineChart(
+                      LineChartData(
+                        lineBarsData: [
+                          LineChartBarData(
+                            spots: snapshot.data!,
+                            isCurved: true,
+                            color: Colors.blue,
+                            barWidth: 4,
+                            belowBarData: BarAreaData(show: false),
+                          ),
+                        ],
+                        titlesData: FlTitlesData(
+                          topTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                          rightTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                            ),
+                          ),
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 22,
+                              getTitlesWidget: (value, meta) {
+                                return Text(_formatYear(value.toInt()));
+                              },
+                            ),
                           ),
                         ),
+                        borderData: FlBorderData(show: true),
                       ),
-                      borderData: FlBorderData(show: true),
                     ),
                   ),
                 );
