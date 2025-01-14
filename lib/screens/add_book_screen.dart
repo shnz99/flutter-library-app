@@ -96,9 +96,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
   }
 
   void _searchForBook() async {
-    final query = _isbnController.text.isNotEmpty ? _isbnController.text : _titleController.text;
+    final query = _isbnController.text.isNotEmpty ? _isbnController.text : (_titleController.text.isNotEmpty ? _titleController.text : _authorController.text);
     if (query.isEmpty) {
-      _showErrorMessage('Please enter a title or ISBN');
+      _showErrorMessage('Please enter a title, author, or ISBN');
       return;
     }
 
