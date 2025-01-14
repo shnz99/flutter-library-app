@@ -3,9 +3,6 @@
     <!-- For Android 12 and below -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    
-    <!-- For Android 13 and above -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <application
         android:label="Mobile Library"
         android:name="${applicationName}"
@@ -44,6 +41,7 @@
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
