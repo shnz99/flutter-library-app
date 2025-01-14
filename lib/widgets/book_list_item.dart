@@ -33,15 +33,33 @@ class BookListItem extends StatelessWidget {
           ],
         ),
         width: double.infinity,
-        child: ListTile(
-          title: Text(book.title),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(book.author),
-              if (book.publishedDate != null) Text('Published Date: ${book.publishedDate}'),
-            ],
-          ),
+        child: Row(
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: Colors.grey[200],
+              ),
+              child: book.imageUrl != null
+                  ? Image.network(book.imageUrl!, fit: BoxFit.cover)
+                  : Container(),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: ListTile(
+                title: Text(book.title),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(book.author),
+                    if (book.publishedDate != null) Text('Published Date: ${book.publishedDate}'),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
