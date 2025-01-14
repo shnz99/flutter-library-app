@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Mobile Library',
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
       ),
       home: _selectedIndex == -1
           ? LoadingScreen()
