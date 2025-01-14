@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     AddBookScreen(),
+    StatisticsScreen(),
     SettingsScreen(),
-    StatisticsScreen(), // Add the StatisticsScreen to the widget options
   ];
 
   void _onItemTapped(int index) {
