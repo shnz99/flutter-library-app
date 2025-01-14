@@ -92,18 +92,23 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                         LineChartBarData(
                           spots: snapshot.data!,
                           isCurved: true,
-                          colors: [Colors.blue],
+                          color: Colors.blue,
                           barWidth: 4,
                           belowBarData: BarAreaData(show: false),
                         ),
                       ],
                       titlesData: FlTitlesData(
-                        leftTitles: SideTitles(showTitles: true),
-                        bottomTitles: SideTitles(
-                          showTitles: true,
-                          getTitles: (value) {
-                            return _formatYear(value.toInt());
-                          },
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: true),
+                        ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 22,
+                            getTitlesWidget: (value, meta) {
+                              return Text(_formatYear(value.toInt()));
+                            },
+                          ),
                         ),
                       ),
                       borderData: FlBorderData(show: true),
