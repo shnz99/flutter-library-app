@@ -42,6 +42,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
         : '';
     _notesController.text = widget.book.notes ?? '';
     _imageUrl = widget.book.imageUrl;
+    _readDateController.addListener(_formatReadDate);
   }
 
   @override
@@ -58,10 +59,18 @@ class _EditBookScreenState extends State<EditBookScreen> {
     super.dispose();
   }
 
+  void _formatReadDate() {
+    final text = _readDateController.text;
+    if (text.length == 2 && !text.contains('-')) {
+      _readDateController.text = '$text-';
+      _readDateController.selection = TextSelection.fromPosition(TextPosition(offset: _readDateController.text.length));
+    }
+  }
+
   void _searchForBook() async {
-    final query = _isbnController.text.isNotEmpty ? _isbnController.text : _titleController.text;
+    final query = _isbnController.text.isNotEmpty ? _isbnController.text : (_titleController.text.isNotEmpty ? _titleController.text : _authorController.text);
     if (query.isEmpty) {
-      _showErrorMessage('Please enter a title or ISBN');
+      _showErrorMessage('Please enter a title, author, or ISBN');
       return;
     }
 

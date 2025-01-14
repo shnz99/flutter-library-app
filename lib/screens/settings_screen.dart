@@ -3,7 +3,6 @@ import '../services/book_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import 'package:permission_handler/permission_handler.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -15,35 +14,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   final BookService _bookService = GetIt.I<BookService>();
 
-  Future<bool> _requestStoragePermission() async {
-    if (!Platform.isAndroid) return true;
-
-    // For Android 13 and above
-    if (await Permission.photos.request().isGranted &&
-        await Permission.videos.request().isGranted) {
-      return true;
-    }
-    // For Android 12 and below
-    else if (await Permission.storage.request().isGranted) {
-      return true;
-    }
-    return false;
-  }
-
   Future<void> _exportLibrary() async {
     try {
-      if (Platform.isAndroid) {
-        final hasPermission = await _requestStoragePermission();
-        if (!hasPermission) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Storage permission is required to export library')),
-            );
-          }
-          return;
-        }
-      }
-
       String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
       if (selectedDirectory == null) return;
 
@@ -71,18 +43,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _importLibrary() async {
     try {
-      if (Platform.isAndroid) {
-        final hasPermission = await _requestStoragePermission();
-        if (!hasPermission) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Storage permission is required to import library')),
-            );
-          }
-          return;
-        }
-      }
-
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.any,
       );

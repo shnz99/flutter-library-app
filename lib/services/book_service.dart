@@ -5,6 +5,7 @@ import '../models/book.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'package:fl_chart/fl_chart.dart';
 
 class BookService {
   static const String _booksTable = 'books';
@@ -173,5 +174,54 @@ class BookService {
   void _notifyBookListChanged() async {
     final books = await getBooksSortedAlphabetically();
     _booksStreamController.add(books);
+  }
+
+  Future<Map<int, Map<int, List<Book>>>> getBooksSortedByYearAndMonth() async {
+    final books = await getBooks();
+    final Map<int, Map<int, List<Book>>> sortedBooks = {};
+
+    for (var book in books) {
+      if (book.readDate != null) {
+        final year = book.readDate!.year;
+        final month = book.readDate!.month;
+
+        if (!sortedBooks.containsKey(year)) {
+          sortedBooks[year] = {};
+        }
+
+        if (!sortedBooks[year]!.containsKey(month)) {
+          sortedBooks[year]![month] = [];
+        }
+
+        sortedBooks[year]![month]!.add(book);
+      }
+    }
+
+    return sortedBooks;
+  }
+
+  Future<int> getBooksCount() async {
+    final db = await database;
+    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $_booksTable'));
+    return count ?? 0;
+  }
+
+  Future<List<FlSpot>> getGraphData() async {
+    final books = await getBooks();
+    final Map<int, int> yearCounts = {};
+
+    for (var book in books) {
+      if (book.readDate != null) {
+        final year = book.readDate!.year;
+        yearCounts[year] = (yearCounts[year] ?? 0) + 1;
+      }
+    }
+
+    final List<FlSpot> spots = [];
+    yearCounts.forEach((year, count) {
+      spots.add(FlSpot(year.toDouble(), count.toDouble()));
+    });
+
+    return spots;
   }
 }
