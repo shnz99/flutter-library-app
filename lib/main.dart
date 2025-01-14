@@ -4,6 +4,7 @@ import 'screens/add_book_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/book_details_screen.dart'; // Import the new screen
 import 'screens/edit_book_screen.dart'; // Import the EditBookScreen
+import 'screens/statistics_screen.dart'; // Import the StatisticsScreen
 import 'models/book.dart'; // Import the Book class
 import 'services/book_service.dart'; // Import the BookService class
 import 'package:get_it/get_it.dart';
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
     HomeScreen(),
     AddBookScreen(),
     SettingsScreen(),
+    StatisticsScreen(), // Add the StatisticsScreen to the widget options
   ];
 
   void _onItemTapped(int index) {
@@ -62,6 +64,35 @@ class _MyAppState extends State<MyApp> {
       home: _selectedIndex == -1
           ? LoadingScreen()
           : Scaffold(
+              appBar: AppBar(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Mobile Library'),
+                    FutureBuilder<int>(
+                      future: _bookService.getBooksCount(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Text(
+                            '...',
+                            style: TextStyle(fontSize: 14),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text(
+                            'Error',
+                            style: TextStyle(fontSize: 14),
+                          );
+                        } else {
+                          return Text(
+                            'Total Books: ${snapshot.data}',
+                            style: TextStyle(fontSize: 14),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
               body: Center(
                 child: _widgetOptions.elementAt(_selectedIndex),
               ),
@@ -78,6 +109,10 @@ class _MyAppState extends State<MyApp> {
                   BottomNavigationBarItem(
                     icon: Icon(Icons.settings),
                     label: 'Settings',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.bar_chart),
+                    label: 'Statistics',
                   ),
                 ],
                 currentIndex: _selectedIndex,
