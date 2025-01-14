@@ -117,6 +117,7 @@ class _MyAppState extends State<MyApp> {
                 ],
                 currentIndex: _selectedIndex,
                 selectedItemColor: Colors.amber[800],
+                unselectedItemColor: Colors.black, // P4453
                 onTap: _onItemTapped,
               ),
             ),
