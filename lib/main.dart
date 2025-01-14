@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Mobile Library',
       theme: ThemeData(
-        brightness: Brightness.light,
+        brightness: Brightness.dark,
       ),
       home: _selectedIndex == -1
           ? LoadingScreen()
@@ -107,12 +107,12 @@ class _MyAppState extends State<MyApp> {
                     label: 'Add Book',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    label: 'Settings',
-                  ),
-                  BottomNavigationBarItem(
                     icon: Icon(Icons.bar_chart),
                     label: 'Statistics',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.settings),
+                    label: 'Settings',
                   ),
                 ],
                 currentIndex: _selectedIndex,
