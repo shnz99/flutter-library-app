@@ -198,4 +198,10 @@ class BookService {
 
     return sortedBooks;
   }
+
+  Future<int> getBooksCount() async {
+    final db = await database;
+    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $_booksTable'));
+    return count ?? 0;
+  }
 }
