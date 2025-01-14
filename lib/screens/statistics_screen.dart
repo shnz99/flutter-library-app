@@ -88,14 +88,14 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                         LineChartBarData(
                           spots: snapshot.data!,
                           isCurved: true,
-                          colors: [Colors.blue],
+                          color: Colors.blue,
                           barWidth: 4,
                           belowBarData: BarAreaData(show: false),
                         ),
                       ],
                       titlesData: FlTitlesData(
-                        leftTitles: SideTitles(showTitles: true),
-                        bottomTitles: SideTitles(showTitles: true),
+                        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
+                        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
                       ),
                       borderData: FlBorderData(show: true),
                     ),

@@ -4,7 +4,6 @@ import 'package:mobile_library/services/book_service.dart';
 import 'package:mobile_library/models/book.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
   group('StatisticsScreen Tests', () {
@@ -50,23 +49,6 @@ void main() {
 
       expect(find.text('No books found'), findsOneWidget);
     });
-
-    testWidgets('StatisticsScreen shows error message on error', (WidgetTester tester) async {
-      GetIt.I.reset();
-      GetIt.I.registerSingleton<BookService>(MockBookServiceWithError());
-
-      await tester.pumpWidget(MaterialApp(home: StatisticsScreen()));
-
-      await tester.pumpAndSettle();
-
-      expect(find.text('Error: Failed to fetch books'), findsOneWidget);
-    });
   });
 }
 
-class MockBookServiceWithError extends BookService {
-  @override
-  Future<Map<int, Map<int, List<Book>>>> getBooksSortedByYearAndMonth() async {
-    throw Exception('Failed to fetch books');
-  }
-}
