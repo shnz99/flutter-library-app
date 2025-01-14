@@ -54,11 +54,15 @@ class BookListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(book.author),
-                    if (book.publishedDate != null) Text('Published Date: ${book.publishedDate}'),
                   ],
                 ),
               ),
             ),
+            if (book.readDate != null)
+              Icon(
+                Icons.check,
+                color: Colors.green,
+              ),
           ],
         ),
       ),
