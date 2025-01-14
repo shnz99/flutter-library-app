@@ -174,4 +174,34 @@ class BookService {
     final books = await getBooksSortedAlphabetically();
     _booksStreamController.add(books);
   }
+
+  Future<Map<int, Map<int, List<Book>>>> getBooksSortedByYearAndMonth() async {
+    final books = await getBooks();
+    final Map<int, Map<int, List<Book>>> sortedBooks = {};
+
+    for (var book in books) {
+      if (book.readDate != null) {
+        final year = book.readDate!.year;
+        final month = book.readDate!.month;
+
+        if (!sortedBooks.containsKey(year)) {
+          sortedBooks[year] = {};
+        }
+
+        if (!sortedBooks[year]!.containsKey(month)) {
+          sortedBooks[year]![month] = [];
+        }
+
+        sortedBooks[year]![month]!.add(book);
+      }
+    }
+
+    return sortedBooks;
+  }
+
+  Future<int> getBooksCount() async {
+    final db = await database;
+    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $_booksTable'));
+    return count ?? 0;
+  }
 }
