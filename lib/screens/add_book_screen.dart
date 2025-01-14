@@ -27,6 +27,12 @@ class _AddBookScreenState extends State<AddBookScreen> {
   String? _imageUrl;
 
   @override
+  void initState() {
+    super.initState();
+    _readDateController.addListener(_formatReadDate);
+  }
+
+  @override
   void dispose() {
     _titleController.dispose();
     _authorController.dispose();
@@ -38,6 +44,14 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _readDateController.dispose();
     _notesController.dispose();
     super.dispose();
+  }
+
+  void _formatReadDate() {
+    final text = _readDateController.text;
+    if (text.length == 2 && !text.contains('-')) {
+      _readDateController.text = '$text-';
+      _readDateController.selection = TextSelection.fromPosition(TextPosition(offset: _readDateController.text.length));
+    }
   }
 
   void _scanBarcode() async {
