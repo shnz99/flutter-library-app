@@ -74,56 +74,68 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               },
             ),
           ),
-          FutureBuilder<List<FlSpot>>(
+            FutureBuilder<List<FlSpot>>(
             future: _graphDataFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
+              return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text('No data for graph'));
+              return Center(child: Text('No data for graph'));
               } else {
-                return Container(
-                  margin: EdgeInsets.all(25),
-                  child: SizedBox(
-                    height: 200,
-                    child: LineChart(
-                      LineChartData(
-                        lineBarsData: [
-                          LineChartBarData(
-                            spots: snapshot.data!,
-                            isCurved: true,
-                            color: Colors.blue,
-                            barWidth: 4,
-                            belowBarData: BarAreaData(show: false),
-                          ),
-                        ],
-                        titlesData: FlTitlesData(
-                          topTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                          rightTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                          leftTitles: AxisTitles(
-                            sideTitles: SideTitles(
-                              showTitles: true,
-                            ),
-                          ),
-                          bottomTitles: AxisTitles(
-                            sideTitles: SideTitles(
-                              showTitles: true,
-                              reservedSize: 22,
-                              getTitlesWidget: (value, meta) {
-                                return Text(_formatYear(value.toInt()));
-                              },
-                            ),
-                          ),
-                        ),
-                        borderData: FlBorderData(show: true),
-                      ),
-                    ),
-                  ),
-                );
+              return Container(
+              margin: EdgeInsets.all(25),
+              child: SizedBox(
+              height: 200,
+              child: LineChart(
+              LineChartData(
+              minX: snapshot.data!.first.x,
+              maxX: snapshot.data!.last.x,
+              minY: 0,
+              maxY: snapshot.data!.map((spot) => spot.y).reduce((a, b) => a > b ? a : b) + 1,
+              lineBarsData: [
+              LineChartBarData(
+              spots: snapshot.data!,
+              isCurved: true,
+              color: Colors.blue,
+              barWidth: 4,
+              belowBarData: BarAreaData(show: false),
+              ),
+              ],
+              titlesData: FlTitlesData(
+              topTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false)),
+              rightTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false)),
+              leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                interval: 1,
+                getTitlesWidget: (value, meta) {
+                if (value >= 10) {
+                return value % 10 == 0 ? Text(value.toInt().toString()) : const Text('');
+                }
+                return Text(value.toInt().toString());
+                },
+              ),
+              ),
+              bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 25,
+                interval: 1,
+                getTitlesWidget: (value, meta) {
+                return Text(_formatYear(value.toInt()));
+                },
+              ),
+              ),
+              ),
+              borderData: FlBorderData(show: true),
+              ),
+              ),
+              ),
+              );
               }
             },
           ),
